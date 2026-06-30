@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotel Management – Check-in / Check-out</title>
+  <style>
+    body { font-family: sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+    nav a { margin-right: 1rem; text-decoration: none; color: #0066cc; }
+    nav a.active { font-weight: bold; color: #333; }
+    h1, h2 { margin-top: 1rem; }
+    form { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; align-items: center; }
+    select, button { padding: 0.4rem 0.8rem; cursor: pointer; }
+    button { background: #0066cc; color: white; border: none; border-radius: 3px; }
+    button.checkout { background: #cc0000; }
+    .message { margin-top: 1rem; padding: 0.5rem 1rem; border-radius: 3px; }
+    .success { background: #d4edda; color: #155724; }
+    .error { background: #f8d7da; color: #721c24; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/rooms.html">Rooms</a>
+    <a href="/guests.html">Guests</a>
+    <a href="/checkin.html" class="active">Check-in / Check-out</a>
+  </nav>
+  <h1>Check-in / Check-out</h1>
+
+  <h2>Check-in</h2>
+  <form id="checkin-form">
+    <select id="checkin-guest"></select>
+    <select id="checkin-room"></select>
+    <button type="submit">Check in</button>
+  </form>
+
+  <h2>Check-out</h2>
+  <form id="checkout-form">
+    <select id="checkout-guest"></select>
+    <button type="submit" class="checkout">Check out</button>
+  </form>
+
+  <div id="message"></div>
+
+  <script src="/js/checkin.js"></script>
+</body>
+</html>
