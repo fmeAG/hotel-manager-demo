@@ -10,12 +10,12 @@ async function loadRooms() {
     tr.innerHTML = `
       <td>${room.number}</td>
       <td>${room.category}</td>
-      <td class="status-${room.status}">${room.status}</td>
+      <td><span class="badge badge-${room.status}">${room.status}</span></td>
       <td>
         <select data-id="${room.id}">
           ${STATUSES.map(s => `<option value="${s}"${s === room.status ? " selected" : ""}>${s}</option>`).join("")}
         </select>
-        <button onclick="changeStatus(${room.id}, this.previousElementSibling)">Save</button>
+        <button class="btn btn-secondary" onclick="changeStatus(${room.id}, this.previousElementSibling)">Save</button>
       </td>
     `;
     tbody.appendChild(tr);

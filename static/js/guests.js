@@ -11,9 +11,8 @@ async function loadGuests() {
       <td>${g.check_in_date ?? "—"}</td>
       <td>${g.check_out_date ?? "—"}</td>
       <td>
-        <button class="edit" onclick="editGuest(${g.id}, '${g.first_name}', '${g.last_name}')">Edit</button>
-        <button class="danger" onclick="deleteGuest(${g.id})">Delete</button>
-      </td>
+        <button class="btn btn-secondary" onclick="editGuest(${g.id}, '${g.first_name}', '${g.last_name}')">Edit</button>
+        <button class="btn btn-danger" onclick="deleteGuest(${g.id})">Delete</button>
     `;
     tbody.appendChild(tr);
   }

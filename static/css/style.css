@@ -1,0 +1,403 @@
+/* ============================================================
+   Hotel Management — shared UI stylesheet
+   Approach: vanilla CSS, no framework, no build step.
+   Theme: modern SaaS-admin, indigo accent (#4f46e5).
+   ============================================================ */
+
+/* ---------- Design tokens ---------- */
+:root {
+  /* Brand / accent */
+  --accent: #4f46e5;
+  --accent-strong: #4338ca;
+  --accent-soft: #eef2ff;
+
+  /* Neutrals (slate) */
+  --bg: #f1f5f9;
+  --surface: #ffffff;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --text-subtle: #64748b;
+
+  /* Semantic / status */
+  --ok: #15803d;
+  --ok-soft: #dcfce7;
+  --bad: #b91c1c;
+  --bad-soft: #fee2e2;
+  --warn: #b45309;
+  --warn-soft: #fef3c7;
+
+  /* Typography */
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  --fs-sm: 0.8125rem;
+  --fs-base: 0.9375rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.5rem;
+
+  /* Shape & depth */
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  --ring: 0 0 0 3px rgba(79, 70, 229, 0.35);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --maxw: 1024px;
+}
+
+/* ---------- Reset-lite ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: var(--fs-base);
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 650;
+  line-height: 1.25;
+  color: var(--text);
+}
+p {
+  margin: 0;
+}
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Layout ---------- */
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
+/* ---------- Header / nav ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  min-height: 56px;
+}
+.brand {
+  font-weight: 700;
+  font-size: var(--fs-lg);
+  letter-spacing: -0.01em;
+  color: var(--accent);
+}
+.nav {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+.nav a {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: var(--fs-base);
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.nav a:hover {
+  background: var(--bg);
+  color: var(--text);
+  text-decoration: none;
+}
+.nav a.active {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* ---------- Main / page ---------- */
+main.container {
+  padding-block: var(--space-6);
+}
+.page-title {
+  font-size: var(--fs-xl);
+  margin-bottom: var(--space-4);
+}
+
+/* ---------- Panel (grouped section) ---------- */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+.panel + .panel {
+  margin-top: var(--space-5);
+}
+.panel h2 {
+  font-size: var(--fs-lg);
+  margin-bottom: var(--space-4);
+}
+
+/* ---------- Forms ---------- */
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+input,
+select {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  min-height: 38px;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+input::placeholder {
+  color: var(--text-subtle);
+}
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--ring);
+}
+input[type="text"],
+input:not([type]) {
+  min-width: 12ch;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font: inherit;
+  font-weight: 550;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-4);
+  min-height: 38px;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease,
+    color 0.12s ease, transform 0.05s ease;
+  white-space: nowrap;
+}
+.btn:hover {
+  background: var(--bg);
+  text-decoration: none;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+}
+.btn-secondary {
+  background: var(--surface);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+.btn-danger {
+  background: var(--bad);
+  border-color: var(--bad);
+  color: #fff;
+}
+.btn-danger:hover {
+  background: #991b1b;
+  border-color: #991b1b;
+}
+
+/* ---------- Tables ---------- */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  background: var(--surface);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-base);
+}
+thead th {
+  background: #f8fafc;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-align: left;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+tbody td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+tbody tr:last-child td {
+  border-bottom: none;
+}
+tbody tr:hover {
+  background: #f8fafc;
+}
+/* inline action cell often contains a select + button */
+td .btn {
+  min-height: 32px;
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--fs-sm);
+}
+td select {
+  min-height: 32px;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--fs-sm);
+}
+
+/* ---------- Status badges ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: 999px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  line-height: 1.4;
+  border: 1px solid transparent;
+}
+.badge::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.85;
+}
+.badge-available {
+  color: var(--ok);
+  background: var(--ok-soft);
+  border-color: #bbf7d0;
+}
+.badge-occupied {
+  color: var(--bad);
+  background: var(--bad-soft);
+  border-color: #fecaca;
+}
+.badge-cleaning {
+  color: var(--warn);
+  background: var(--warn-soft);
+  border-color: #fde68a;
+}
+
+/* ---------- Toast / notices ---------- */
+.message {
+  margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  font-size: var(--fs-base);
+}
+.message.success {
+  background: var(--ok-soft);
+  color: var(--ok);
+  border-color: #bbf7d0;
+}
+.message.error {
+  background: var(--bad-soft);
+  color: var(--bad);
+  border-color: #fecaca;
+}
+
+/* ---------- Empty / hints ---------- */
+.muted {
+  color: var(--text-subtle);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+  .site-header__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding-block: var(--space-2);
+    min-height: 0;
+  }
+  .container {
+    padding-inline: var(--space-3);
+  }
+  .form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .form .btn,
+  .form input,
+  .form select {
+    width: 100%;
+  }
+  .panel {
+    padding: var(--space-4);
+  }
+}
+
+/* ---------- Accessibility ---------- */
+:focus-visible {
+  outline: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

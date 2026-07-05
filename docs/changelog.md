@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.1.0] - 2026-07-02
+
+### Changed
+
+- Replaced per-page inline `<style>` blocks with a single shared stylesheet `static/css/style.css`, linked from all three UI pages
+- Adopted a cohesive modern SaaS-admin theme: indigo accent (`#4f46e5`), CSS custom properties for palette/spacing/radii/shadows, system font stack
+- Made the UI responsive: sticky header, fluid container, horizontally scrollable tables on small viewports
+- Unified the component vocabulary across pages (`.btn`, `.btn-primary`, `.btn-secondary`, `.btn-danger`, `.badge`, `.panel`, `.table-wrap`)
+
+### Added
+
+- Semantic `<header>` / `<nav>` site shell with active-page highlighting
+- Status badges (`badge-available`, `badge-occupied`, `badge-cleaning`) replacing plain coloured text
+- `:focus-visible` rings and AA-contrast colours for keyboard accessibility
+- `prefers-reduced-motion` handling
+
+
+
 ## [1.0.0] - 2026-06-30
 
 ### Added

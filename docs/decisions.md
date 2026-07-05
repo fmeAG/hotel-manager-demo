@@ -42,3 +42,19 @@ The room status transition from `occupied` directly to `available` is blocked at
 
 Consequences:
 Business rule is enforced at the service layer, not just the API layer. The rule may need revisiting if a real housekeeping workflow is introduced.
+
+---
+
+## Decision 004
+
+Date: 2026-07-02
+
+Context:
+The browser UI used per-page inline `<style>` blocks that duplicated nav/table/button rules inconsistently across the three pages (rooms, guests, check-in). Styling had drifted apart and nothing was responsive.
+
+Decision:
+Consolidate all UI styling into a single shared vanilla stylesheet `static/css/style.css`, loaded via `<link>` from every page. No CSS framework, no build step, no external font requests (system font stack). Theme is a modern SaaS-admin look with an indigo accent (`#4f46e5`) and CSS custom properties for palette, spacing, radii, and shadows. Tables become horizontally scrollable on small viewports via a `.table-wrap` container instead of restructuring rows into cards.
+
+Consequences:
+Single source of truth for styling — a change to the design tokens propagates to every page. Stays consistent with Decision 001 (no frontend tooling). Responsive by default without markup-per-row logic. Adds one static asset that FastAPI's existing `StaticFiles` mount already serves at `/css/style.css`. Status and button classes now follow a documented component vocabulary (`.badge`, `.btn`, `.panel`), so future pages must reuse these classes rather than reintroducing inline styles.
+

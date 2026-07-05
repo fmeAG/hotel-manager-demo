@@ -25,6 +25,8 @@ hotel-management/
 │   ├── rooms.html
 │   ├── guests.html
 │   ├── checkin.html
+│   ├── css/
+│   │   └── style.css        # Shared UI stylesheet (design tokens + components)
 │   └── js/
 │       ├── rooms.js
 │       ├── guests.js
