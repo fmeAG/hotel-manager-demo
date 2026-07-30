@@ -29,6 +29,13 @@ def test_create_guest(client):
     assert res.json()["first_name"] == "Hans"
 
 
+def test_create_guest_preserves_german_umlauts(client):
+    res = client.post("/api/guests", json={"first_name": "Jörg", "last_name": "Schröder"})
+    assert res.status_code == 201
+    assert res.json()["first_name"] == "Jörg"
+    assert res.json()["last_name"] == "Schröder"
+
+
 def test_list_guests(client):
     client.post("/api/guests", json={"first_name": "Anna", "last_name": "Müller"})
     res = client.get("/api/guests")

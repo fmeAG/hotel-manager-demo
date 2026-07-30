@@ -14,6 +14,7 @@
         <a href="/rooms.html">Rooms</a>
         <a href="/guests.html" class="active">Guests</a>
         <a href="/checkin.html">Check-in / Check-out</a>
+        <a href="/messages.html">Messages</a>
       </nav>
     </div>
   </header>
@@ -41,6 +42,25 @@
         </table>
       </div>
     </section>
+
+    <dialog id="edit-guest-dialog" class="dialog">
+      <form id="edit-form" class="form form--stacked">
+        <h2>Edit Guest</h2>
+        <div class="field">
+          <label for="edit-first-name">First name</label>
+          <input id="edit-first-name" required>
+        </div>
+        <div class="field">
+          <label for="edit-last-name">Last name</label>
+          <input id="edit-last-name" required>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" id="edit-cancel" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </dialog>
+
     <script src="/js/guests.js"></script>
   </main>
 </body>

@@ -14,6 +14,7 @@ Hotels use the application to manage guest stays. Reception staff can view room 
 - **Guest Management** — Create, view, update, and delete guests
 - **Check-in** — Assign an available room to a guest and mark the room as occupied
 - **Check-out** — Remove the room assignment and mark the room as available
+- **Messaging** — Reception can send a message to a room, list and filter messages by room, and view/advance message status (sent / delivered / read). Guests can view and reply to their own room's messages via an unauthenticated URL (`/guest_messages.html?room_id=`); message delivery to the guest is tracked automatically, "read" is a guest-confirmed action
 
 ## Main Workflows
 
@@ -33,5 +34,5 @@ Hotels use the application to manage guest stays. Reception staff can view room 
 Not in scope for the initial version:
 
 - Authentication / Authorization
-- Messaging / Notifications
+- Push notifications
 - Real-time communication

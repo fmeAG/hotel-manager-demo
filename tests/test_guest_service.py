@@ -18,6 +18,12 @@ def test_create_guest(db):
     assert guest.first_name == "Hans"
 
 
+def test_create_guest_preserves_german_umlauts(db):
+    guest = guest_service.create_guest(db, "Jörg", "Müller")
+    assert guest.first_name == "Jörg"
+    assert guest.last_name == "Müller"
+
+
 def test_update_guest(db):
     guest = make_guest(db)
     updated = guest_service.update_guest(db, guest.id, "Eva", "Klein")

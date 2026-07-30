@@ -1,5 +1,50 @@
 # Changelog
 
+## [1.4.0] - 2026-07-20
+
+### Added
+
+- Guest-facing message view: `static/guest_messages.html` + `static/js/guest_messages.js`, reached via an unauthenticated `/guest_messages.html?room_id=` link (no login, consistent with the project's no-auth scope)
+- Guests can view and send messages for their own room, not just view them (deliberate scope widening beyond the original spec wording — see Decision 008)
+- Automatic `sent → delivered` status transition when the guest view loads a reception-authored message; `→ read` remains an explicit guest action
+- "Guest view" link per row in the reception `messages.html` message list
+- Integration test `test_guest_view_message_flow` in `tests/test_messages_api.py` pinning the request sequence the guest view depends on
+
+### Changed
+
+- `docs/overview.md` — "Messaging" capability description now covers both reception and guest views; "Guest-facing messaging view" removed from Scope Boundaries
+
+## [1.3.1] - 2026-07-20
+
+### Fixed
+
+- Guest first/last names containing German umlauts (`ä`, `ö`, `ü`, `ß`) were silently stripped to their ASCII-only form on create/update (e.g. `"Jörg"` → `"Jrg"`) due to an unconditional ASCII-only sanitization step in `guest_service`. Non-ASCII characters are now preserved.
+
+## [1.3.0] - 2026-07-20
+
+### Added
+
+- Messaging feature (reception-facing): send a message to a room, list all messages, filter by room, view status (`sent` / `delivered` / `read`), advance status forward
+- `Message` model, `message_repository`, `message_service`, `POST/GET /api/messages`, `GET /api/messages/{id}`, `PATCH /api/messages/{id}/status`
+- `static/messages.html` + `static/js/messages.js`, linked from all existing pages' nav
+- Status badge styles for message status (`badge-sent`, `badge-delivered`, `badge-read`) in `static/css/style.css`
+- Unit tests for the message service layer, integration tests for the messages API
+
+### Known limitations
+
+- No guest-facing view yet (spec Story 2) — deferred; `GET /api/messages?room_id=` already supports it without an API change
+- `sender` is free text with no authenticated identity behind it, consistent with the project's current no-auth scope
+
+## [1.2.0] - 2026-07-20
+
+### Changed
+
+- Guest editing now opens a proper dialog (native `<dialog>` element) instead of two sequential browser `prompt()` popups
+
+### Added
+
+- Shared dialog/modal styling (`.dialog`, `.dialog-actions`, `.form--stacked`) in `static/css/style.css`, reusing existing design tokens
+
 ## [1.1.0] - 2026-07-02
 
 ### Changed

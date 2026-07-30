@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotel Management – Messages (Guest)</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <span class="brand">Hotel Manager</span>
+      <nav class="nav">
+        <span id="room-label"></span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="page-title">Your Messages</h1>
+
+    <section class="panel">
+      <h2>Send Message</h2>
+      <form id="send-form" class="form">
+        <input id="send-content" placeholder="Message text" required>
+        <button type="submit" class="btn btn-primary">Send</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Message History</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Sender</th><th>Content</th><th>Sent</th><th>Status</th><th>Mark read</th></tr>
+          </thead>
+          <tbody id="messages-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <script src="/js/guest_messages.js"></script>
+  </main>
+</body>
+</html>

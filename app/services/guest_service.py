@@ -3,11 +3,6 @@ from sqlalchemy.orm import Session
 from app.models import Guest
 from app.repositories import guest_repository
 
-
-
-def _drop_non_ascii(value: str) -> str:
-    return value.encode("ascii", errors="ignore").decode("ascii")
-
 def list_guests(db: Session) -> list[Guest]:
     return guest_repository.get_all(db)
 
@@ -20,12 +15,12 @@ def get_guest(db: Session, guest_id: int) -> Guest:
 
 
 def create_guest(db: Session, first_name: str, last_name: str) -> Guest:
-    return guest_repository.create(db, _drop_non_ascii(first_name), _drop_non_ascii(last_name))
+    return guest_repository.create(db, first_name, last_name)
 
 
 def update_guest(db: Session, guest_id: int, first_name: str, last_name: str) -> Guest:
     guest = get_guest(db, guest_id)
-    return guest_repository.update(db, guest, _drop_non_ascii(first_name), _drop_non_ascii(last_name))
+    return guest_repository.update(db, guest, first_name, last_name)
 
 
 def delete_guest(db: Session, guest_id: int) -> None:
