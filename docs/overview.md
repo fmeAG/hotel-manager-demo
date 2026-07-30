@@ -13,7 +13,7 @@ Hotels use the application to manage guest stays. Reception staff can view room 
 - **Room Management** — List rooms, view details, change room status (available / occupied / cleaning)
 - **Guest Management** — Create, view, update, and delete guests
 - **Check-in** — Assign an available room to a guest and mark the room as occupied
-- **Check-out** — Remove the room assignment and mark the room as available
+- **Check-out** — Remove the room assignment, mark the room as cleaning, and return it to available only after cleaning is complete
 - **Messaging** — Reception can send a message to a room, list and filter messages by room, and view/advance message status (sent / delivered / read). The separated **Guest Chat** entry in the persistent top navigation opens a room selector; guests can then view and reply to that room's messages via the unauthenticated `/guest_messages.html?room_id=` URL. Message delivery to the guest is tracked automatically, and "read" is a guest-confirmed action.
 
 ## Main Workflows
@@ -27,7 +27,7 @@ Hotels use the application to manage guest stays. Reception staff can view room 
 ### Check-out
 
 1. Reception selects a guest who is currently checked in.
-2. System removes the room assignment, marks the room as available, and records the check-out date.
+2. System removes the room assignment, marks the room as cleaning, and records the check-out date. Reception marks the room as available after cleaning is complete.
 
 ## Scope Boundaries
 

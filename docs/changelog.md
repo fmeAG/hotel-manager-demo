@@ -6,6 +6,13 @@
 
 - Persistent top navigation across hotel and guest-chat pages, with a visually separated **Guest Chat** entry that opens a room selector and provides a route back to the hotel pages.
 
+
+### Changed
+
+- Check-out now moves a room from `occupied` to `cleaning`; only a subsequent manual status change after cleaning returns it to `available`.
+- The room overview now shows live availability counts, contextual date and status controls with success/error feedback.
+- The base specification, overview, API reference, architecture, and decision records now describe the room availability lifecycle consistently.
+
 ### Removed
 
 - Pytest suite and test-only dependencies.

@@ -93,8 +93,9 @@ Reception staff must be able to:
 Reception staff must be able to:
 
 - Remove room assignment
-- Mark room as available
+- Mark room as cleaning
 - Store check-out date
+- Mark the room as available only after cleaning is complete
 
 ---
 

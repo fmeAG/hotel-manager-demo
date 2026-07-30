@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hotel Management – Rooms</title>
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/style.css?v=room-overview-v2">
 </head>
 <body>
   <header class="site-header">
@@ -22,16 +22,44 @@
   </header>
 
   <main class="container">
-    <h1 class="page-title">Rooms</h1>
+    <header class="page-heading">
+      <div>
+        <p class="eyebrow">Hotel operations</p>
+        <h1 class="page-title">Room overview</h1>
+        <p class="page-description">Monitor availability and housekeeping status at a glance.</p>
+      </div>
+      <time id="current-date" class="page-date"></time>
+    </header>
+
+    <section class="room-overview" aria-label="Room status overview">
+      <article class="room-summary room-summary--available">
+        <span class="room-summary__label">Available</span>
+        <strong id="available-count" class="room-summary__count">0</strong>
+        <span class="room-summary__detail">ready for guests</span>
+      </article>
+      <article class="room-summary room-summary--occupied">
+        <span class="room-summary__label">Occupied</span>
+        <strong id="occupied-count" class="room-summary__count">0</strong>
+        <span class="room-summary__detail">currently in use</span>
+      </article>
+      <article class="room-summary room-summary--cleaning">
+        <span class="room-summary__label">Cleaning</span>
+        <strong id="cleaning-count" class="room-summary__count">0</strong>
+        <span class="room-summary__detail">awaiting turnover</span>
+      </article>
+    </section>
+
+    <div id="room-feedback" class="message room-feedback" role="status" aria-live="polite" hidden></div>
+
     <div class="table-wrap">
       <table id="rooms-table">
         <thead>
-          <tr><th>Number</th><th>Category</th><th>Status</th><th>Change Status</th></tr>
+          <tr><th>Number</th><th>Category</th><th>Status</th><th>Set status</th></tr>
         </thead>
         <tbody id="rooms-body"></tbody>
       </table>
     </div>
-    <script src="/js/rooms.js"></script>
+    <script src="/js/rooms.js?v=room-overview"></script>
   </main>
 </body>
 </html>

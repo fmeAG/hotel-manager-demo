@@ -86,6 +86,11 @@ foreign key from `Room` back to a single guest or message (a room can have
 zero or more messages; at most one currently-checked-in guest is enforced at
 the service layer, not the schema).
 
+Room availability follows the service-enforced lifecycle
+`available → occupied → cleaning → available`. Check-out performs the
+`occupied → cleaning` transition; only a room explicitly returned to
+`available` after cleaning can be checked in again.
+
 ## External Dependencies
 
 - **FastAPI** — HTTP framework and routing.

@@ -13,14 +13,18 @@ Documentation is considered part of the software product and must be maintained 
 
 # Documentation Layout
 
-```text
 docs/
 ├── overview.md
 ├── architecture.md
 ├── api.md
 ├── decisions.md
-└── changelog.md
-```
+├── changelog.md
+├── documentation_structure.md
+└── chat_gap_analysis.md
+specs/
+├── basis_spec.md
+├── chat_feature_spec.md
+└── architecture_options.md
 
 ---
 

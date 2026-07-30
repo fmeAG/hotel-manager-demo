@@ -33,6 +33,8 @@ Clear separation of concerns. Simple single-container deployment. Services can b
 ## Decision 003
 
 Date: 2026-06-30
+Status: Superseded by [Decision 009](#decision-009).
+
 
 Context:
 Occupied rooms cannot be immediately set to available during a checkout — housekeeping must clean the room first.
@@ -132,3 +134,18 @@ A dedicated `direction` (`to_guest` / `from_guest`) column on `Message` was cons
 Consequences:
 Guests can now view and reply to their room's messages via an unauthenticated, bookmarkable URL, with no API or schema changes. `docs/overview.md`'s Scope Boundaries entry "Guest-facing messaging view" is no longer accurate and is updated alongside this decision. The `sender`-prefix convention (`"Guest ("`) is now load-bearing for the auto-delivered logic — renaming or restructuring the fixed sender string requires updating `guest_messages.js`'s `isFromGuest()` check in lockstep. There is no automated test suite for the frontend behavior.
 
+
+---
+
+## Decision 009
+
+Date: 2026-07-30
+
+Context:
+Decision 003 correctly blocked a direct `occupied → available` status update, but its checkout implementation still marked rooms `available`. That bypassed the stated housekeeping requirement and made a checked-out room immediately reusable.
+
+Decision:
+Checkout moves the assigned room from `occupied` to `cleaning`. The existing service-level status policy remains the source of truth: check-in accepts only `available` rooms, and reception must explicitly move a cleaned room to `available` before reuse. This supersedes the checkout behavior recorded in Decision 003.
+
+Consequences:
+The checkout API contract now exposes the intermediate `cleaning` state. No schema or endpoint changes are required. The checkout service has a regression test covering both the cleared assignment and the required room status.

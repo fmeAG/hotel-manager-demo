@@ -30,5 +30,5 @@ def check_out(db: Session, guest_id: int) -> Guest:
         raise HTTPException(status_code=409, detail="Guest is not checked in")
 
     room = room_repository.get_by_id(db, guest.room_id)
-    room_repository.update_status(db, room, RoomStatus.available)
+    room_repository.update_status(db, room, RoomStatus.cleaning)
     return guest_repository.remove_room(db, guest, date.today())

@@ -43,7 +43,7 @@ Response `200`: updated `RoomResponse`.
 Response `404`: room does not exist.
 Response `409`: room is `occupied` and the requested status is not
 `cleaning` — an occupied room can only be moved to `cleaning` directly
-(Decision 003).
+(Decision 009).
 
 ---
 
@@ -131,7 +131,8 @@ Response `409`: guest already has a room assigned, or the room is not
 Remove a guest's room assignment.
 
 Response `200`: updated `GuestResponse` with `room_id` cleared and
-`check_out_date` set. The room's status is set to `available`.
+`check_out_date` set. The room's status is set to `cleaning`; it cannot be
+checked in again until reception marks it `available` after cleaning.
 Response `404`: guest does not exist.
 Response `409`: guest has no room assigned.
 
