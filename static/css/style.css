@@ -141,6 +141,18 @@ a:hover {
   color: var(--accent);
   background: var(--accent-soft);
 }
+.nav__divider {
+  align-self: stretch;
+  width: 1px;
+  margin-inline: var(--space-2);
+  background: var(--border-strong);
+}
+.nav__context {
+  align-self: center;
+  color: var(--text-subtle);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+}
 
 /* ---------- Main / page ---------- */
 main.container {

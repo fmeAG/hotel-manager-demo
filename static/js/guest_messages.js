@@ -2,10 +2,31 @@ const GUEST_SENDER_PREFIX = "Guest (";
 
 const params = new URLSearchParams(window.location.search);
 const roomId = Number(params.get("room_id"));
+const hasRoomId = Number.isInteger(roomId) && roomId > 0;
 let currentRoom = null;
 
 function isFromGuest(sender) {
   return sender.startsWith(GUEST_SENDER_PREFIX);
+}
+
+function setChatVisible(isVisible) {
+  document.getElementById("room-selection").hidden = isVisible;
+  document.getElementById("send-panel").hidden = !isVisible;
+  document.getElementById("history-panel").hidden = !isVisible;
+}
+
+async function loadRoomOptions() {
+  const res = await fetch("/api/rooms");
+  if (!res.ok) return;
+
+  const roomSelect = document.getElementById("room-select");
+  const rooms = await res.json();
+  for (const room of rooms) {
+    const option = document.createElement("option");
+    option.value = room.id;
+    option.textContent = `Room ${room.number}`;
+    roomSelect.appendChild(option);
+  }
 }
 
 async function loadRoomLabel() {
@@ -65,6 +86,13 @@ async function loadMessages() {
   }
 }
 
+document.getElementById("room-select-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const selectedRoomId = document.getElementById("room-select").value;
+  if (!selectedRoomId) return;
+  window.location.assign(`/guest_messages.html?room_id=${selectedRoomId}`);
+});
+
 document.getElementById("send-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const content = document.getElementById("send-content").value.trim();
@@ -82,7 +110,19 @@ document.getElementById("send-form").addEventListener("submit", async (e) => {
 });
 
 (async function init() {
+  if (!hasRoomId) {
+    setChatVisible(false);
+    await loadRoomOptions();
+    return;
+  }
+
   const room = await loadRoomLabel();
-  if (!room) return;
+  if (!room) {
+    setChatVisible(false);
+    await loadRoomOptions();
+    return;
+  }
+
+  setChatVisible(true);
   await loadMessages();
 })();

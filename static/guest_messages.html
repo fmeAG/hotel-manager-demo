@@ -10,16 +10,33 @@
   <header class="site-header">
     <div class="container site-header__inner">
       <span class="brand">Hotel Manager</span>
-      <nav class="nav">
-        <span id="room-label"></span>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="/rooms.html">Rooms</a>
+        <a href="/guests.html">Guests</a>
+        <a href="/checkin.html">Check-in / Check-out</a>
+        <a href="/messages.html">Messages</a>
+        <span class="nav__divider" aria-hidden="true"></span>
+        <a href="/guest_messages.html" class="active">Guest Chat</a>
+        <span id="room-label" class="nav__context"></span>
       </nav>
     </div>
   </header>
 
   <main class="container">
-    <h1 class="page-title">Your Messages</h1>
+    <h1 class="page-title">Guest Chat</h1>
 
-    <section class="panel">
+    <section id="room-selection" class="panel">
+      <h2>Select Room</h2>
+      <form id="room-select-form" class="form">
+        <label for="room-select">Room</label>
+        <select id="room-select" required>
+          <option value="">Choose a room</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Open Chat</button>
+      </form>
+    </section>
+
+    <section id="send-panel" class="panel" hidden>
       <h2>Send Message</h2>
       <form id="send-form" class="form">
         <input id="send-content" placeholder="Message text" required>
@@ -27,7 +44,7 @@
       </form>
     </section>
 
-    <section class="panel">
+    <section id="history-panel" class="panel" hidden>
       <h2>Message History</h2>
       <div class="table-wrap">
         <table>

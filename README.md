@@ -42,13 +42,6 @@ the SQLite database to `./data/hotel.db` on the host (via the
   `sqlite:///./hotel.db`. Docker Compose sets it to
   `sqlite:///./data/hotel.db`.
 
-## Run tests
-
-```bash
-pip install -r requirements.txt
-pytest
-```
-
 ## Project structure
 
 ```
@@ -60,7 +53,6 @@ app/
   database.py     Engine/session setup
   main.py         App entrypoint, router registration
 static/           Browser UI (plain HTML/CSS/JS)
-tests/            Pytest suite (service + API tests)
 docs/             Overview, architecture, API reference, decisions, changelog
 specs/            Feature specifications
 ```

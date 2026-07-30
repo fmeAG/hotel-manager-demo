@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Persistent top navigation across hotel and guest-chat pages, with a visually separated **Guest Chat** entry that opens a room selector and provides a route back to the hotel pages.
+
+### Removed
+
+- Pytest suite and test-only dependencies.
+
 ## [1.4.0] - 2026-07-20
 
 ### Added

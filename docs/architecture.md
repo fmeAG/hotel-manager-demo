@@ -61,8 +61,7 @@ static/
   room-status transition restrictions (Decision 003), message status
   transitions (Decision 006), guest check-in/out preconditions. Raises
   `HTTPException` for domain errors (404, 409). Depends only on the
-  repository layer, not on FastAPI request/response types, so it is testable
-  without HTTP (see `tests/test_*_service.py`).
+  repository layer, not on FastAPI request/response types.
 - **Repository layer (`app/repositories/`)** — SQLAlchemy queries and
   persistence only (create, read, update). No business rules.
 - **Frontend (`static/`)** — Plain HTML and vanilla JavaScript, one page per

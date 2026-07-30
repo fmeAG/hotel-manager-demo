@@ -105,7 +105,7 @@ Decision:
 Remove the ASCII-sanitization step from `guest_service`. Guest names are persisted as received (SQLite/SQLAlchemy `String` columns are UTF-8 safe already; no schema or repository change needed). No replacement validation was added, since none was ever specified — if input restrictions on guest names are needed in the future, they must be defined as an explicit requirement first.
 
 Consequences:
-German (and other non-ASCII) names now round-trip correctly through create/update. No migration needed since this only affects data written going forward; any guest rows already corrupted by the old behavior are not backfilled by this change. Covered by a service-level test (`test_create_guest_preserves_german_umlauts`) and an API-level test (`test_create_guest_preserves_german_umlauts` in `tests/test_api.py`) so a regression would be caught in CI.
+German (and other non-ASCII) names now round-trip correctly through create/update. No migration needed since this only affects data written going forward; any guest rows already corrupted by the old behavior are not backfilled.
 
 ---
 
@@ -118,6 +118,7 @@ Decision 006 deferred the guest-facing message view and the underlying "who is t
 
 Decision:
 - Guest identity is the `room_id` query parameter, unauthenticated — `/guest_messages.html?room_id={id}`. No PIN, code, or other credential is introduced. Anyone with the URL can view and send messages for that room; this is the same no-auth posture as the rest of the application, not a new risk class, but is called out explicitly as a known limitation.
+- The persistent top navigation links the guest chat and hotel pages in both directions. Its visually separated Guest Chat link opens a room selector when no `room_id` is provided; selecting a room navigates to the existing query-parameter URL.
 - The guest view ships as its own page (`static/guest_messages.html` + `static/js/guest_messages.js`) rather than a role-toggle on the existing reception `messages.html`, matching the project's existing one-page-per-purpose pattern (`rooms.html`, `guests.html`, `checkin.html`, `messages.html`) and avoiding a UI element that would visually imply a real (but nonexistent) permission boundary between roles.
 - Scope was widened beyond the original spec wording ("guests can view their room's messages") to let guests also send messages, since a one-way channel was judged less useful than a two-way one for this iteration. This is a deliberate scope decision, not an oversight.
 - No backend changes were needed — the guest view is a pure frontend consumer of the existing `GET /api/rooms/{id}`, `GET /api/messages?room_id=`, `POST /api/messages`, and `PATCH /api/messages/{id}/status` endpoints from Decision 006.
@@ -129,5 +130,5 @@ Rejected alternative:
 A dedicated `direction` (`to_guest` / `from_guest`) column on `Message` was considered for distinguishing guest- from reception-authored messages, instead of the `sender`-prefix check. Rejected for this iteration: it requires a schema change/migration for a distinction the sender-prefix convention already gives for free, and Decision 006 deliberately kept the `messages` schema minimal. Revisit if the `sender` field ever needs to hold something other than a display string (e.g. once real guest identity/auth exists).
 
 Consequences:
-Guests can now view and reply to their room's messages via an unauthenticated, bookmarkable URL, with no API or schema changes. `docs/overview.md`'s Scope Boundaries entry "Guest-facing messaging view" is no longer accurate and is updated alongside this decision. The `sender`-prefix convention (`"Guest ("`) is now load-bearing for the auto-delivered logic — renaming or restructuring the fixed sender string requires updating `guest_messages.js`'s `isFromGuest()` check in lockstep. No automated test covers the frontend auto-delivered/mark-read behavior directly (the project has no JS test harness, per Decision 001); the underlying API request sequence it relies on is pinned by `test_guest_view_message_flow` in `tests/test_messages_api.py`.
+Guests can now view and reply to their room's messages via an unauthenticated, bookmarkable URL, with no API or schema changes. `docs/overview.md`'s Scope Boundaries entry "Guest-facing messaging view" is no longer accurate and is updated alongside this decision. The `sender`-prefix convention (`"Guest ("`) is now load-bearing for the auto-delivered logic — renaming or restructuring the fixed sender string requires updating `guest_messages.js`'s `isFromGuest()` check in lockstep. There is no automated test suite for the frontend behavior.
 
