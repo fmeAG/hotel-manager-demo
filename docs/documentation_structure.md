@@ -20,7 +20,14 @@ docs/
 ├── decisions.md
 ├── changelog.md
 ├── documentation_structure.md
-└── chat_gap_analysis.md
+├── chat_gap_analysis.md
+└── testing/
+    ├── analyse_<YYYYMMDD>.md
+    ├── testbasis.md
+    ├── akzeptanzkriterien.md
+    ├── risikoanalyse.md
+    ├── testfaelle.md
+    └── traceability.md
 specs/
 ├── basis_spec.md
 ├── chat_feature_spec.md
@@ -177,6 +184,92 @@ Removed functionality.
 ## Update Rules
 
 Must be updated after every completed implementation step.
+
+---
+
+# Test Documentation
+
+## Purpose
+
+The `docs/testing/` directory contains the documented test basis and the
+derived test artifacts.
+
+Test documentation must distinguish between:
+
+- documented facts,
+- assumptions,
+- open questions,
+- contradictions between sources.
+
+Test artifacts must remain traceable to their sources. Undocumented behavior
+must not be presented as an accepted requirement or expected test result.
+
+## Structure
+
+### `analyse_<YYYYMMDD>.md`
+
+A dated analysis produced while examining specifications, project
+documentation, implementation, and tester observations.
+
+The analysis is a working document and may contain:
+
+- identified functions,
+- examined sources,
+- documented facts,
+- assumptions,
+- open questions,
+- initial product risks,
+- contradictions between sources.
+
+Important statements must be marked as `BELEGT`, `ANNAHME`, `OFFEN`, or
+`WIDERSPRUCH`.
+
+The date uses the `YYYYMMDD` format, for example:
+`analyse_20260730.md`.
+
+An analysis file is an intermediate working artifact. It does not replace the
+reviewed test basis.
+
+### `testbasis.md`
+
+Contains the reviewed test basis, including test objectives, test scope,
+examined sources, constraints, assumptions, open questions, and identified
+contradictions.
+
+### `akzeptanzkriterien.md`
+
+Contains reviewed and testable acceptance criteria derived from confirmed
+requirements. Each criterion has a unique ID and a source reference.
+
+### `risikoanalyse.md`
+
+Contains identified product risks, their possible impact, prioritization,
+related acceptance criteria, and initial test ideas.
+
+### `testfaelle.md`
+
+Contains concrete test cases derived from reviewed acceptance criteria and
+prioritized risks. Test cases include prerequisites, test data, steps, expected
+results, test level, and automation suitability.
+
+### `traceability.md`
+
+Connects acceptance criteria, product risks, and test cases to make test
+coverage and gaps visible.
+
+## Update Rules
+
+Test documentation must be updated when:
+
+- confirmed requirements change,
+- new relevant risks are identified,
+- acceptance criteria are added or revised,
+- test cases are added or revised,
+- traceability or test coverage changes.
+
+Dated analysis files are historical working artifacts and must not be silently
+rewritten after their review. A new analysis run should normally create a new
+dated file.
 
 ---
 
