@@ -582,13 +582,471 @@ begrenzt werden. Die Review- und Reflexionsphase sollte nicht entfallen.
 
 ## Übergang zur nächsten Aufgabe
 
-Die nächste Schulungsaufgabe beginnt mit der Auswahl eines priorisierten
-API-Testfalls aus `testfaelle.md`.
+Die nächste Schulungsaufgabe (Schulungsaufgabe 2) überführt die fachlich
+geprüfte Testdokumentation in ausführbare, automatisierte Tests mit Robot
+Framework.
 
 Der Arbeitsauftrag kann lauten:
 
-> Wählt einen fachlich geprüften API-Testfall aus der Testdokumentation aus und
-> automatisiert ihn mit Robot Framework. Verändert den Anwendungscode nicht.
+> Lies die Testing-Dokumentation in `docs/testing/` und erstelle automatisierte
+> Testfälle mit dem Robot Framework aus `docs/testing/testfaelle.md`. Verändere
+> den Anwendungscode nicht.
 
 Damit erleben die Teilnehmenden die vollständige Verbindung von der Anforderung
-über die Testdokumentation bis zum ausführbaren automatisierten Test.
+über die Testdokumentation bis zum ausführbaren automatisierten Test — und die
+in Aufgabe 1 bewusst nicht aufgelösten, vorbereiteten Produktfehler werden
+erstmals als fehlschlagende Tests sichtbar.
+
+---
+
+# Schulungsaufgabe 2: Testfälle mit Robot Framework automatisieren
+
+## Einordnung
+
+Diese Aufgabe ist der zweite praktische Teil der Testerschulung. Sie baut
+unmittelbar auf der in Schulungsaufgabe 1 erstellten Testdokumentation auf. Die
+Teilnehmenden lassen aus den dokumentierten Testfällen (`docs/testing/testfaelle.md`)
+mit Claude Code eine ausführbare Robot-Framework-Testsuite erzeugen, führen sie
+gegen die laufende Anwendung aus und interpretieren die Ergebnisse.
+
+Der Anwendungscode wird in dieser Aufgabe noch **nicht** verändert. Ziel ist
+zunächst, das dokumentierte Soll-Verhalten in automatisierte Prüfungen zu
+überführen und den Ist-Zustand der Anwendung sichtbar zu machen — einschließlich
+etwaiger Abweichungen.
+
+## Ausgangssituation
+
+Das Projekt enthält zu Beginn dieser Aufgabe:
+
+- die fachlich geprüfte Testdokumentation aus Aufgabe 1
+  (`testbasis.md`, `akzeptanzkriterien.md`, `risikoanalyse.md`, `testfaelle.md`),
+- eine lauffähige Hotel-Anwendung mit REST-API und Browser-UI,
+- eine installierte Testumgebung (Robot Framework, RequestsLibrary, Browser-Library).
+
+Das Projekt enthält zu Beginn noch nicht:
+
+- eine ausführbare Robot-Framework-Testsuite,
+- eine Auswertung, welche dokumentierten Testfälle die Anwendung tatsächlich erfüllt,
+- eine belastbare Aussage über die vorbereiteten Produktfehler.
+
+## Lernziele
+
+Nach der Aufgabe können die Teilnehmenden:
+
+- dokumentierte Testfälle in ausführbare Robot-Framework-Tests überführen,
+- Claude Code für die Erstellung einer wartbaren, mehrschichtigen Testsuite einsetzen,
+- API-Tests (RequestsLibrary) und E2E-Tests (Browser-Library) unterscheiden und einordnen,
+- die Rückverfolgbarkeit zwischen Testfall-ID und automatisiertem Test prüfen,
+- Testergebnisse (bestanden / fehlgeschlagen / übersprungen) korrekt interpretieren,
+- einen fehlgeschlagenen Test als Hinweis auf einen Produktfehler statt als Testfehler erkennen,
+- beurteilen, welche Tests sinnvoll automatisierbar sind und welche manuell bleiben.
+
+## Erwartetes Ergebnis
+
+Am Ende der Aufgabe liegt im Projekt eine ausführbare, nach Ebenen getrennte
+Testsuite vor:
+
+```text
+tests/
+└── robot/
+    ├── resources/          # wiederverwendbare Keywords (API, UI, Variablen)
+    ├── api/                # Integrationstests auf API-Ebene
+    ├── e2e/                # End-to-End-Tests über die Browser-UI
+    └── README.md           # Ausführung, Voraussetzungen, Befunde
+```
+
+Ergänzend liegt ein dokumentierter Testlauf vor, der klar ausweist:
+
+- welche Testfälle bestehen,
+- welche fehlschlagen und welchen Produktfehler sie belegen,
+- welche Testfälle bewusst als manuell/übersprungen gekennzeichnet sind.
+
+## Wichtige Arbeitsregel
+
+Claude Code erstellt die Testautomatisierung. Die fachliche Verantwortung für
+Auswahl, erwartetes Ergebnis und Freigabe bleibt bei den Testern.
+
+Die KI darf:
+
+- aus `testfaelle.md` ausführbare Robot-Framework-Tests erstellen,
+- wiederverwendbare Keywords und eine sinnvolle Projektstruktur anlegen,
+- Testvorbedingungen über die API selbst herstellen und wieder aufräumen,
+- Tests ausführen und die Ergebnisse zusammenfassen.
+
+Die KI darf nicht:
+
+- den Anwendungscode verändern,
+- vorbereitete Produktfehler beheben,
+- das erwartete Ergebnis eines Tests an fehlerhaftes Ist-Verhalten anpassen,
+  nur damit der Test „grün“ wird — die Tests bilden das dokumentierte
+  **Soll-Verhalten** ab,
+- dokumentierte manuelle Tests unbemerkt als automatisiert ausgeben.
+
+## Arbeitsauftrag für die Teilnehmenden
+
+### Schritt 1: Testumgebung vorbereiten
+
+Startet die Anwendung in einem definierten Ausgangszustand. Empfohlen wird eine
+**separate Test-Datenbank**, damit die produktive `hotel.db` nicht verändert wird:
+
+```bash
+DATABASE_URL="sqlite:///./data/robot_run.db" \
+  .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+Für die E2E-Tests müssen die Browser der Browser-Library einmalig initialisiert
+sein (`.venv/bin/rfbrowser init`).
+
+### Schritt 2: Testsuite von Claude Code erstellen lassen
+
+Verwendet beispielsweise folgenden Auftrag:
+
+  > Lies die Testing-Dokumentation in `docs/testing/` und erstelle automatisierte
+  > Testfälle mit dem Robot Framework aus `docs/testing/testfaelle.md`. Verändere
+  > den Anwendungscode nicht.
+
+Achtet bewusst darauf, den Auftrag zunächst nur auf die **Automatisierungs­kandidaten**
+(🤖) und die technisch automatisierbaren Sicherheitstests zu beziehen und die als
+manuell markierten Fälle (🧪, z. B. Concurrency, Persistenz nach Neustart) als
+solche zu kennzeichnen.
+
+### Schritt 3: Aufbau der Suite prüfen
+
+Prüft gemeinsam:
+
+- Ist die Suite in **zwei Ebenen** getrennt (lesbare Testfälle vs. gekapselte
+  Low-Level-Keywords in `resources/`)?
+- Trägt jeder Test seine **Testfall-ID** (`TC-...`) als Tag, sodass die
+  Rückverfolgbarkeit zu `testfaelle.md` erhalten bleibt?
+- Stellen die Tests ihre Vorbedingungen selbst her und räumen sie wieder auf
+  (die Seed-Daten enthalten nur Räume, keine Gäste/Nachrichten)?
+- Wurden API- und E2E-Ebene passend zur Vorgabe aus `testfaelle.md` gewählt?
+- Wurden die manuellen Fälle **nicht** stillschweigend „mitautomatisiert“?
+
+### Schritt 4: Suite ausführen und Ergebnisse interpretieren
+
+```bash
+.venv/bin/python -m robot --outputdir results/robot-full tests/robot
+```
+
+Betrachtet `results/robot-full/report.html` und `log.html` und ordnet jedes
+Ergebnis ein:
+
+- **Bestanden:** Die Anwendung erfüllt das dokumentierte Soll-Verhalten.
+- **Übersprungen:** bewusst manuell gehaltene Fälle (z. B. Concurrency, Neustart).
+- **Fehlgeschlagen:** Hier weicht das Ist-Verhalten vom dokumentierten
+  Soll-Verhalten ab. In diesem Projekt schlagen insbesondere die drei
+  XSS-Tests (`TC-SEC-001..003`) fehl — sie weisen einen realen, vorbereiteten
+  Produktfehler nach (Nachrichteninhalte werden ungeschützt gerendert).
+
+Wichtig: Ein fehlgeschlagener Sicherheitstest ist an dieser Stelle **kein**
+Testfehler, sondern der erwartete Nachweis eines Produktfehlers. Der Fehler wird
+in dieser Aufgabe noch nicht behoben.
+
+## Gemeinsames Review
+
+### Reviewfragen
+
+- Bildet jeder automatisierte Test seinen dokumentierten Testfall korrekt ab?
+- Sind die erwarteten Ergebnisse aus dem Soll-Verhalten abgeleitet, nicht aus dem
+  beobachteten Ist-Verhalten?
+- Ist die Suite unabhängig von einer festen Ausführungsreihenfolge und
+  wiederholbar?
+- Sind die fehlschlagenden Tests nachvollziehbar einem Produktfehler zugeordnet?
+- Sind manuelle Fälle klar als solche gekennzeichnet und begründet?
+
+### Definition of Done
+
+Die Aufgabe ist abgeschlossen, wenn:
+
+- eine ausführbare Robot-Framework-Suite unter `tests/robot/` vorliegt,
+- die automatisierten Tests auf die Testfall-IDs aus `testfaelle.md` zurückführbar sind,
+- die Suite gegen die laufende Anwendung ausgeführt wurde,
+- die Ergebnisse (bestanden / fehlgeschlagen / übersprungen) dokumentiert und
+  interpretiert sind,
+- die fehlschlagenden Tests einem konkreten Produktfehler zugeordnet sind,
+- Claude Code **keine** Anwendungsdateien verändert hat.
+
+## Reflexion
+
+Besprecht zum Abschluss:
+
+1. Welche Testfälle ließen sich unmittelbar automatisieren, welche nicht — und warum?
+2. Wie hat die Trennung in Keyword-Ebene und Testfall-Ebene die Lesbarkeit beeinflusst?
+3. Wodurch wurde der vorbereitete Produktfehler sichtbar, der bei der reinen
+   Dokumentenprüfung (Aufgabe 1) verborgen blieb?
+4. Woran erkennt man, dass ein fehlgeschlagener Test ein Produkt- und kein
+   Testfehler ist?
+5. Welche Risiken bestehen, wenn man Tests an das Ist-Verhalten anpasst, statt an
+   das Soll-Verhalten?
+
+## Hinweise für die Schulungsleitung
+
+- Die vorbereiteten Produktfehler sollen genau hier als fehlschlagende Tests
+  sichtbar werden. Nicht vorab verraten, wo sie liegen.
+- Darauf bestehen, dass die erwarteten Ergebnisse aus `testfaelle.md` stammen.
+  Falls die KI versucht, ein erwartetes Ergebnis dem beobachteten Ist-Verhalten
+  anzugleichen, dies gemeinsam als Anti-Muster besprechen.
+- Für die E2E-Tests im Vorfeld sicherstellen, dass die Browser der
+  Browser-Library initialisiert sind.
+- Immer gegen eine separate Test-Datenbank ausführen lassen, damit der
+  Ausgangsstand schnell wiederherstellbar bleibt.
+
+### Einführung in Robot Framework (Kurzpräsentation)
+
+Zu Beginn dieser Aufgabe empfiehlt sich eine kurze Präsentation (wenige Folien,
+ca. 10 Minuten), die Robot Framework einordnet, bevor die Teilnehmenden die
+generierte Suite lesen. Vorschlag für die Folieninhalte:
+
+1. **Was ist Robot Framework?** — ein generisches, offenes Automatisierungs-Framework
+   für Test- und Robotic-Process-Automation, unabhängig von der Zielanwendung.
+2. **Keyword-getriebener Ansatz** — Tests bestehen aus lesbaren „Keywords“;
+   fachliche Testfälle und technische Umsetzung sind getrennt.
+3. **Bibliotheken** — Funktionalität kommt aus Libraries, hier: RequestsLibrary
+   (HTTP/REST) und Browser-Library (Playwright, UI/E2E).
+4. **Aufbau einer Suite** — `.robot`-Dateien (`*** Settings ***`, `*** Test Cases ***`,
+   `*** Keywords ***`) und wiederverwendbare `.resource`-Dateien.
+5. **Zwei-Ebenen-Prinzip** — lesbare Testfälle oben, gekapselte Low-Level-Keywords
+   in `resources/` — genau das Muster der gleich betrachteten Suite.
+6. **Ergebnisberichte** — `report.html`, `log.html` und die Zustände
+   bestanden / fehlgeschlagen / übersprungen.
+7. **Einordnung im Kurs** — Brücke von der Testdokumentation (Aufgabe 1) zum
+   ausführbaren Test.
+
+Ziel ist ein gemeinsames Grundverständnis, keine vollständige Werkzeugschulung —
+die Details erschließen sich anhand der konkreten Suite.
+
+## Empfohlener Zeitrahmen
+
+| Abschnitt | Richtwert |
+|---|---:|
+| Einführung in Robot Framework (Folien/Kurzpräsentation) | 10 Minuten |
+| Testumgebung vorbereiten | 5 Minuten |
+| Testsuite von Claude Code erstellen lassen | 15 Minuten |
+| Aufbau der Suite prüfen | 15 Minuten |
+| Suite ausführen und Ergebnisse interpretieren | 15 Minuten |
+| Review und Reflexion | 15 Minuten |
+| **Gesamt** | **75 Minuten** |
+
+Steht weniger Zeit zur Verfügung, kann die Prüfung des Suite-Aufbaus gekürzt
+werden; die Einführung, der Testlauf und die Ergebnisinterpretation sollten
+erhalten bleiben.
+
+## Übergang zur nächsten Aufgabe
+
+Die fehlschlagenden Tests aus dieser Aufgabe bilden den Ausgangspunkt für
+Schulungsaufgabe 3: Dort wird der nachgewiesene Produktfehler **testgetrieben**
+behoben.
+
+Der Arbeitsauftrag kann lauten:
+
+> Bitte behebe die Fehler im Code auf Basis der fehlgeschlagenen Testfälle.
+
+Damit erleben die Teilnehmenden den vollständigen Kreislauf: Anforderung →
+Testdokumentation → automatisierter Test → aufgedeckter Fehler → behobener Fehler
+mit automatisiertem Regressionsnachweis.
+
+---
+
+# Schulungsaufgabe 3: Produktfehler testgetrieben beheben
+
+## Einordnung
+
+Diese Aufgabe ist der dritte praktische Teil der Testerschulung. Sie schließt den
+Kreis: Der in Schulungsaufgabe 2 durch fehlschlagende Tests nachgewiesene
+Produktfehler wird jetzt behoben — **auf Basis der fehlschlagenden Testfälle** und
+mit ihnen als Erfolgsnachweis.
+
+Hier ändert sich die zentrale Arbeitsregel bewusst: Während in den Aufgaben 1 und
+2 der Anwendungscode unangetastet blieb, ist die Codeänderung nun ausdrücklich
+Ziel der Aufgabe. Die Teilnehmenden erleben den Perspektivwechsel von der
+Fehler**erkennung** zur Fehler**behebung** und lernen, fehlgeschlagene Tests als
+ausführbare Spezifikation zu nutzen.
+
+## Ausgangssituation
+
+Das Projekt enthält zu Beginn dieser Aufgabe:
+
+- die ausführbare Robot-Framework-Suite aus Aufgabe 2,
+- einen dokumentierten Testlauf mit fehlschlagenden Tests (`TC-SEC-001..003`),
+- die zugehörige Testdokumentation und die Projekt-Entscheidungshistorie
+  (`docs/decisions.md`, `docs/changelog.md`).
+
+Das Projekt enthält zu Beginn noch nicht:
+
+- die Fehlerbehebung im Anwendungscode,
+- den Nachweis, dass die zuvor roten Tests nach der Behebung bestehen,
+- die aktualisierte Projektdokumentation zur Behebung.
+
+## Lernziele
+
+Nach der Aufgabe können die Teilnehmenden:
+
+- einen fehlgeschlagenen Test als präzise Vorgabe für eine Behebung lesen,
+- Claude Code gezielt zur Ursachenanalyse und zu einer minimalen Behebung einsetzen,
+- die vorgeschlagene Codeänderung fachlich und technisch bewerten,
+- den Erfolg einer Behebung durch einen erneuten Testlauf belegen (Regressionsnachweis),
+- erkennen, warum Tests nicht aufgeweicht werden dürfen, um sie „grün“ zu bekommen,
+- Behebungen nachvollziehbar in Changelog und Entscheidungsdokumentation festhalten.
+
+## Erwartetes Ergebnis
+
+Am Ende der Aufgabe:
+
+- ist der Produktfehler im Anwendungscode behoben,
+- bestehen die zuvor fehlgeschlagenen Tests (`TC-SEC-001..003`),
+- ist die übrige Suite unverändert grün (bewusste manuelle Skips ausgenommen),
+- sind Changelog (Abschnitt „Fixed“) und Entscheidungsdokumentation
+  (`docs/decisions.md`) entsprechend ergänzt.
+
+## Wichtige Arbeitsregel
+
+Claude Code führt die Behebung durch. Die Entscheidung, ob die Behebung fachlich
+und technisch angemessen ist, bleibt bei den Teilnehmenden.
+
+Die KI darf:
+
+- die fehlgeschlagenen Tests als Vorgabe für die Behebung heranziehen,
+- die Ursache im Anwendungscode analysieren und benennen,
+- eine minimale, begründete Codeänderung vornehmen,
+- die Behebung durch erneutes Ausführen der Tests belegen,
+- Changelog und Entscheidungsdokumentation aktualisieren.
+
+Die KI darf nicht:
+
+- die Tests abschwächen, umschreiben oder deaktivieren, damit sie bestehen,
+- über das durch die Tests belegte Soll-Verhalten hinaus „raten“ oder unnötig
+  große Umbauten vornehmen,
+- gespeicherte Nutzdaten stillschweigend verändern, um ein Symptom zu kaschieren,
+- eine Behebung als abgeschlossen ausgeben, solange nicht alle betroffenen Tests
+  nachweislich bestehen.
+
+## Arbeitsauftrag für die Teilnehmenden
+
+### Schritt 1: Fehlschläge verstehen
+
+Öffnet den Testlauf aus Aufgabe 2 (`results/.../log.html`) und arbeitet heraus:
+
+- Welche Testfälle schlagen fehl (`TC-SEC-001..003`)?
+- Welches **Soll-Verhalten** fordern sie (Nachrichteninhalt wird als Text
+  angezeigt, HTML wird nicht gerendert, Skripte/Event-Handler werden nicht
+  ausgeführt)?
+- Welches Ist-Verhalten zeigt die Anwendung stattdessen?
+
+### Schritt 2: Behebung von Claude Code durchführen lassen
+
+Verwendet beispielsweise folgenden Auftrag:
+
+  > Bitte behebe die Fehler im Code auf Basis der fehlgeschlagenen Testfälle.
+
+### Schritt 3: Ursachenanalyse prüfen
+
+Prüft gemeinsam, ob die benannte Ursache belegt ist:
+
+- Wo entsteht der Fehler (z. B. Rendering der Nachrichten in
+  `static/js/messages.js` und `static/js/guest_messages.js`)?
+- Warum führt er zur Ausführung von eingeschleustem HTML/JavaScript
+  (Ausgabe über `innerHTML` statt textbasiert)?
+- Sind sowohl Rezeptions- als auch Gastsicht betroffen?
+
+### Schritt 4: Behebung bewerten
+
+Prüft die vorgeschlagene Änderung auf Angemessenheit:
+
+- Ist die Behebung **minimal** und auf die Ursache bezogen (Ausgabe als Text,
+  z. B. über `textContent` / DOM-Aufbau, statt HTML-Interpolation)?
+- Bleiben API, Datenmodell und gespeicherte Daten unverändert (Behebung als
+  Ausgabe-, nicht als Eingabeproblem)?
+- Wurden **keine** Tests abgeschwächt, um Grün zu erzeugen?
+
+### Schritt 5: Regressionsnachweis führen
+
+Führt die Suite erneut aus:
+
+```bash
+.venv/bin/python -m robot --outputdir results/robot-full tests/robot
+```
+
+Belegt, dass die zuvor roten Tests jetzt bestehen und keine zuvor grünen Tests
+neu fehlschlagen. Die Sicherheitstests dienen nun als **Regressionsschutz**.
+
+### Schritt 6: Dokumentation nachziehen
+
+Haltet die Behebung nachvollziehbar fest:
+
+- `docs/changelog.md`: Eintrag unter „Fixed“,
+- `docs/decisions.md`: kurze Entscheidung zur gewählten Behebung inkl.
+  verworfener Alternativen.
+
+## Gemeinsames Review
+
+### Reviewfragen
+
+- Ist die Ursache belegt und nicht nur vermutet?
+- Ist die Behebung minimal und auf das durch die Tests belegte Soll-Verhalten begrenzt?
+- Wurden die Tests unverändert gelassen (kein Aufweichen)?
+- Belegt ein erneuter Testlauf den Erfolg und die Abwesenheit neuer Fehlschläge?
+- Ist die Behebung in Changelog und Entscheidungsdokumentation nachvollziehbar?
+
+### Definition of Done
+
+Die Aufgabe ist abgeschlossen, wenn:
+
+- der Produktfehler im Anwendungscode behoben ist,
+- die zuvor fehlgeschlagenen Tests nachweislich bestehen,
+- keine zuvor bestehenden Tests neu fehlschlagen,
+- die Tests inhaltlich unverändert geblieben sind,
+- Changelog und Entscheidungsdokumentation aktualisiert wurden.
+
+## Reflexion
+
+Besprecht zum Abschluss:
+
+1. Wie hat der fehlgeschlagene Test die Behebung angeleitet?
+2. Woran erkennt man, dass eine Behebung die Ursache und nicht nur ein Symptom trifft?
+3. Welche Gefahr entsteht, wenn Tests angepasst werden, um sie bestehen zu lassen?
+4. Welchen Wert haben die Sicherheitstests nach der Behebung als Regressionsschutz?
+5. Wie unterscheidet sich die Verantwortung des Menschen in Aufgabe 3 von der in
+   den Aufgaben 1 und 2?
+
+## Hinweise für die Schulungsleitung
+
+- Der Rollen- und Regelwechsel (Codeänderung jetzt erlaubt) sollte explizit
+  benannt werden.
+- Besonders darauf achten, dass die Tests nicht verändert werden, um sie grün zu
+  bekommen — dies ist der zentrale didaktische Punkt der Aufgabe.
+- Auf einen echten, erneuten Testlauf als Nachweis bestehen; ein bloßes „müsste
+  jetzt funktionieren“ genügt nicht.
+- Die Pflege von Changelog und Entscheidungsdokumentation als festen Bestandteil
+  der Behebung einfordern.
+
+## Empfohlener Zeitrahmen
+
+| Abschnitt | Richtwert |
+|---|---:|
+| Fehlschläge verstehen (Soll vs. Ist) | 10 Minuten |
+| Behebung durch Claude Code durchführen lassen | 10 Minuten |
+| Ursachenanalyse und Behebung bewerten | 15 Minuten |
+| Regressionsnachweis (erneuter Testlauf) | 10 Minuten |
+| Dokumentation nachziehen | 5 Minuten |
+| Review und Reflexion | 10 Minuten |
+| **Gesamt** | **60 Minuten** |
+
+Steht weniger Zeit zur Verfügung, kann die Dokumentationspflege verkürzt werden;
+der Regressionsnachweis darf nicht entfallen.
+
+## Übergang zur nächsten Aufgabe
+
+Mit einer belegten Behebung und grüner Suite ist der Kreislauf aus Anforderung,
+Testdokumentation, Automatisierung und Fehlerbehebung vollständig durchlaufen.
+
+Mögliche Anschlussthemen für weitere Aufgaben:
+
+> Bindet die Robot-Framework-Suite in eine CI-Pipeline ein, sodass die Tests bei
+> jeder Änderung automatisch ausgeführt werden.
+
+> Weitet die Automatisierung auf weitere, bislang manuelle Testfälle aus und
+> begründet, welche Fälle bewusst manuell bleiben.
+
+Damit verschiebt sich der Fokus von der einmaligen Erstellung hin zur
+dauerhaften, automatisierten Absicherung der Anwendung.
