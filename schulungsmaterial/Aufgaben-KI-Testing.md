@@ -2,10 +2,8 @@
 
 ## Einordnung
 
-Diese Aufgabe ist der erste praktische Teil der Testerschulung. Die
-Teilnehmenden lernen zunächst die Hotel-Anwendung und ihre Chatfunktion kennen.
-Anschließend nutzen sie Claude Code, um aus Anwendung, Spezifikation und
-Projektdokumentation eine belastbare Testbasis zu entwickeln.
+Diese Aufgabe ist der erste praktische Teil der Testerschulung. Zunächst lernen wir die Hotel-Anwendung und ihre Chatfunktion kennen.
+Anschließend nutzen wir Claude Code, um aus der Anwendung, der Spezifikation und der Projektdokumentation eine belastbare Testbasis zu entwickeln.
 
 In dieser Aufgabe werden noch keine automatisierten Tests erstellt. Robot
 Framework wird erst in einer späteren Aufgabe eingeführt.
@@ -31,7 +29,7 @@ Das Projekt enthält zu Beginn noch nicht:
 
 ## Lernziele
 
-Nach der Aufgabe können die Teilnehmenden:
+Nach dieser Aufgabe können die Teilnehmer:
 
 - eine unbekannte Anwendung aus Sicht eines Testers erkunden,
 - Claude Code zur strukturierten Analyse eines Projekts einsetzen,
@@ -64,7 +62,7 @@ von Testfällen mit Robot Framework.
 ## Wichtige Arbeitsregel
 
 Claude Code unterstützt die Analyse und erstellt Entwürfe. Die fachliche
-Verantwortung bleibt bei den Testern.
+Verantwortung bleibt bei euch!
 
 Die KI darf:
 
@@ -99,7 +97,7 @@ erwarteten Testergebnis werden.
 
 ---
 
-# Arbeitsauftrag für die Teilnehmenden
+# Arbeitsauftrag
 
 ## Schritt 1: Anwendung starten und erkunden
 
@@ -153,7 +151,7 @@ Verwendet beispielsweise folgenden Auftrag:
   > Weitere Dateien dürfen nicht verändert werden. Zeige mir anschließend eine kurze Zusammenfassung der Analyse und die Liste aller veränderten
   > Dateien.
 
-Prüft die Antwort gemeinsam:
+Disskutiert die Antwort gemeinsam:
 
 - Hat Claude Code alle relevanten Quellen berücksichtigt?
 - Sind die genannten Quellen tatsächlich vorhanden?
@@ -182,7 +180,7 @@ Sie soll mindestens enthalten:
 Möglicher Auftrag an Claude Code:
 
   > Erstelle auf Grundlage der geprüften Analyse in
-  > docs/testing/analyse_yyyymmdd.md einen Entwurf für
+  > docs/testing/analyse_xxxxxxxx.md einen Entwurf für
   > docs/testing/testbasis.md.
   >
   > Berücksichtige zusätzlich die in der Analyse genannten Originalquellen. Übernimm Aussagen nicht ungeprüft allein deshalb, weil sie im
@@ -219,7 +217,7 @@ Möglicher Auftrag an Claude Code:
   > - die wichtigsten weiterhin offenen Fragen,
   > - alle veränderten Dateien.
 
-Prüft den erzeugten Entwurf und korrigiert ihn gemeinsam.
+Prüft den erzeugten Entwurf und korrigiert ihn bei Bedarf.
 
 ## Schritt 4: Akzeptanzkriterien formulieren
 
@@ -491,19 +489,6 @@ Die Aufgabe endet mit einem gemeinsamen Review der erstellten Dokumente.
 - Gibt es erkennbare Abdeckungslücken?
 - Sind die wichtigsten Automatisierungskandidaten erkennbar?
 
-## Definition of Done
-
-Die Aufgabe ist abgeschlossen, wenn:
-
-- alle fünf Testdokumente vorhanden sind,
-- die Dokumente von den Teilnehmenden geprüft wurden,
-- belegte Aussagen, Annahmen und offene Fragen unterscheidbar sind,
-- alle priorisierten Testfälle auf bestätigte Akzeptanzkriterien verweisen,
-- hoch priorisierte Risiken mindestens einem Testfall zugeordnet sind,
-- mindestens ein geeigneter API-Testfall für die spätere
-  Robot-Framework-Automatisierung ausgewählt wurde,
-- Claude Code keine Anwendungsdateien verändert hat.
-
 ---
 
 # Reflexion
@@ -519,7 +504,7 @@ Besprecht zum Abschluss:
 6. Wie hat die Dokumentationsstruktur die Arbeit unterstützt?
 7. Welchen Testfall würdet ihr als Erstes automatisieren und warum?
 
-## Zentrale Erkenntnis
+## Zu merken!
 
 Claude Code kann große Mengen an Projektinformationen analysieren, strukturieren
 und erste Testartefakte erstellen. Die KI kann jedoch nicht selbst entscheiden,
@@ -527,75 +512,9 @@ welches fachliche Verhalten richtig ist. Tester bleiben verantwortlich für
 Testziel, erwartetes Ergebnis, Risikobewertung und Freigabe der
 Testdokumentation.
 
----
 
-# Hinweise für die Schulungsleitung
 
-## Vorbereitung
 
-Vor der Schulung ist sicherzustellen:
-
-- Die Hotel-Anwendung mit Chatfunktion ist lauffähig.
-- Eine verständliche Startanleitung ist vorhanden.
-- Spezifikation, API-Dokumentation und Anwendung sind grundsätzlich
-  miteinander vergleichbar.
-- `docs/documentation_structure.md` beschreibt die Ablage und Mindestinhalte
-  der Testdokumentation.
-- Das Verzeichnis `docs/testing/` ist entweder leer oder enthält nur
-  unbefüllte Vorlagen.
-- Vorhandene automatisierte Tests wurden aus dem Schulungsstand entfernt.
-- Vorbereitete Produktfehler werden in keiner Teilnehmerunterlage verraten.
-- Für fachlich offene Fragen stehen vorbereitete Trainerentscheidungen zur
-  Verfügung.
-- Ein unveränderter Ausgangsstand kann bei Bedarf schnell wiederhergestellt
-  werden.
-
-## Didaktische Hinweise
-
-- Nicht sofort den vermeintlich besten Prompt vorgeben. Die Gruppe soll
-  Unterschiede zwischen unpräzisen und kontrollierten Aufträgen erleben.
-- Claude Code zunächst ausschließlich analysieren lassen.
-- Dokumente nacheinander erstellen, nicht alle in einem einzigen großen Prompt.
-- Nach jedem Dokument einen menschlichen Review durchführen.
-- Bei erfundenen Anforderungen nicht nur korrigieren, sondern gemeinsam
-  untersuchen, warum die Formulierung des Auftrags dies ermöglicht hat.
-- Die Anzahl der Testfälle bewusst begrenzen. Qualität und Begründung sind
-  wichtiger als eine große Menge generierter Tests.
-- Noch keine Produktfehler auflösen. Die Fehler sollen später durch die
-  automatisierten Tests sichtbar werden.
-
-## Empfohlener Zeitrahmen
-
-| Abschnitt | Richtwert |
-|---|---:|
-| Anwendung starten und gemeinsam erkunden | 10 Minuten |
-| Projektanalyse und Testbasis | 15 Minuten |
-| Akzeptanzkriterien | 15 Minuten |
-| Risikoanalyse und Testideen | 15 Minuten |
-| Testfälle und Nachverfolgbarkeit | 20 Minuten |
-| Review und Reflexion | 15 Minuten |
-| **Gesamt** | **90 Minuten** |
-
-Falls für die gesamte Aufgabe weniger Zeit zur Verfügung steht, sollte der
-Umfang auf wenige priorisierte Akzeptanzkriterien und drei bis fünf Testfälle
-begrenzt werden. Die Review- und Reflexionsphase sollte nicht entfallen.
-
-## Übergang zur nächsten Aufgabe
-
-Die nächste Schulungsaufgabe (Schulungsaufgabe 2) überführt die fachlich
-geprüfte Testdokumentation in ausführbare, automatisierte Tests mit Robot
-Framework.
-
-Der Arbeitsauftrag kann lauten:
-
-> Lies die Testing-Dokumentation in `docs/testing/` und erstelle automatisierte
-> Testfälle mit dem Robot Framework aus `docs/testing/testfaelle.md`. Verändere
-> den Anwendungscode nicht.
-
-Damit erleben die Teilnehmenden die vollständige Verbindung von der Anforderung
-über die Testdokumentation bis zum ausführbaren automatisierten Test — und die
-in Aufgabe 1 bewusst nicht aufgelösten, vorbereiteten Produktfehler werden
-erstmals als fehlschlagende Tests sichtbar.
 
 ---
 
@@ -603,9 +522,8 @@ erstmals als fehlschlagende Tests sichtbar.
 
 ## Einordnung
 
-Diese Aufgabe ist der zweite praktische Teil der Testerschulung. Sie baut
-unmittelbar auf der in Schulungsaufgabe 1 erstellten Testdokumentation auf. Die
-Teilnehmenden lassen aus den dokumentierten Testfällen (`docs/testing/testfaelle.md`)
+Diese Aufgabe baut unmittelbar auf der gerade erstellten Testdokumentation auf. Die
+Teilnehmer lassen aus den dokumentierten Testfällen (`docs/testing/testfaelle.md`)
 mit Claude Code eine ausführbare Robot-Framework-Testsuite erzeugen, führen sie
 gegen die laufende Anwendung aus und interpretieren die Ergebnisse.
 
@@ -631,7 +549,7 @@ Das Projekt enthält zu Beginn noch nicht:
 
 ## Lernziele
 
-Nach der Aufgabe können die Teilnehmenden:
+Nach der Aufgabe können die Teilnehmer:
 
 - dokumentierte Testfälle in ausführbare Robot-Framework-Tests überführen,
 - Claude Code für die Erstellung einer wartbaren, mehrschichtigen Testsuite einsetzen,
@@ -682,7 +600,7 @@ Die KI darf nicht:
   **Soll-Verhalten** ab,
 - dokumentierte manuelle Tests unbemerkt als automatisiert ausgeben.
 
-## Arbeitsauftrag für die Teilnehmenden
+## Arbeitsauftrag für die Teilnehmer
 
 ### Schritt 1: Testumgebung vorbereiten
 
@@ -780,71 +698,6 @@ Besprecht zum Abschluss:
 5. Welche Risiken bestehen, wenn man Tests an das Ist-Verhalten anpasst, statt an
    das Soll-Verhalten?
 
-## Hinweise für die Schulungsleitung
-
-- Die vorbereiteten Produktfehler sollen genau hier als fehlschlagende Tests
-  sichtbar werden. Nicht vorab verraten, wo sie liegen.
-- Darauf bestehen, dass die erwarteten Ergebnisse aus `testfaelle.md` stammen.
-  Falls die KI versucht, ein erwartetes Ergebnis dem beobachteten Ist-Verhalten
-  anzugleichen, dies gemeinsam als Anti-Muster besprechen.
-- Für die E2E-Tests im Vorfeld sicherstellen, dass die Browser der
-  Browser-Library initialisiert sind.
-- Immer gegen eine separate Test-Datenbank ausführen lassen, damit der
-  Ausgangsstand schnell wiederherstellbar bleibt.
-
-### Einführung in Robot Framework (Kurzpräsentation)
-
-Zu Beginn dieser Aufgabe empfiehlt sich eine kurze Präsentation (wenige Folien,
-ca. 10 Minuten), die Robot Framework einordnet, bevor die Teilnehmenden die
-generierte Suite lesen. Vorschlag für die Folieninhalte:
-
-1. **Was ist Robot Framework?** — ein generisches, offenes Automatisierungs-Framework
-   für Test- und Robotic-Process-Automation, unabhängig von der Zielanwendung.
-2. **Keyword-getriebener Ansatz** — Tests bestehen aus lesbaren „Keywords“;
-   fachliche Testfälle und technische Umsetzung sind getrennt.
-3. **Bibliotheken** — Funktionalität kommt aus Libraries, hier: RequestsLibrary
-   (HTTP/REST) und Browser-Library (Playwright, UI/E2E).
-4. **Aufbau einer Suite** — `.robot`-Dateien (`*** Settings ***`, `*** Test Cases ***`,
-   `*** Keywords ***`) und wiederverwendbare `.resource`-Dateien.
-5. **Zwei-Ebenen-Prinzip** — lesbare Testfälle oben, gekapselte Low-Level-Keywords
-   in `resources/` — genau das Muster der gleich betrachteten Suite.
-6. **Ergebnisberichte** — `report.html`, `log.html` und die Zustände
-   bestanden / fehlgeschlagen / übersprungen.
-7. **Einordnung im Kurs** — Brücke von der Testdokumentation (Aufgabe 1) zum
-   ausführbaren Test.
-
-Ziel ist ein gemeinsames Grundverständnis, keine vollständige Werkzeugschulung —
-die Details erschließen sich anhand der konkreten Suite.
-
-## Empfohlener Zeitrahmen
-
-| Abschnitt | Richtwert |
-|---|---:|
-| Einführung in Robot Framework (Folien/Kurzpräsentation) | 10 Minuten |
-| Testumgebung vorbereiten | 5 Minuten |
-| Testsuite von Claude Code erstellen lassen | 15 Minuten |
-| Aufbau der Suite prüfen | 15 Minuten |
-| Suite ausführen und Ergebnisse interpretieren | 15 Minuten |
-| Review und Reflexion | 15 Minuten |
-| **Gesamt** | **75 Minuten** |
-
-Steht weniger Zeit zur Verfügung, kann die Prüfung des Suite-Aufbaus gekürzt
-werden; die Einführung, der Testlauf und die Ergebnisinterpretation sollten
-erhalten bleiben.
-
-## Übergang zur nächsten Aufgabe
-
-Die fehlschlagenden Tests aus dieser Aufgabe bilden den Ausgangspunkt für
-Schulungsaufgabe 3: Dort wird der nachgewiesene Produktfehler **testgetrieben**
-behoben.
-
-Der Arbeitsauftrag kann lauten:
-
-> Bitte behebe die Fehler im Code auf Basis der fehlgeschlagenen Testfälle.
-
-Damit erleben die Teilnehmenden den vollständigen Kreislauf: Anforderung →
-Testdokumentation → automatisierter Test → aufgedeckter Fehler → behobener Fehler
-mit automatisiertem Regressionsnachweis.
 
 ---
 
@@ -880,7 +733,7 @@ Das Projekt enthält zu Beginn noch nicht:
 
 ## Lernziele
 
-Nach der Aufgabe können die Teilnehmenden:
+Nach der Aufgabe können die Teilnehmer:
 
 - einen fehlgeschlagenen Test als präzise Vorgabe für eine Behebung lesen,
 - Claude Code gezielt zur Ursachenanalyse und zu einer minimalen Behebung einsetzen,
@@ -921,7 +774,7 @@ Die KI darf nicht:
 - eine Behebung als abgeschlossen ausgeben, solange nicht alle betroffenen Tests
   nachweislich bestehen.
 
-## Arbeitsauftrag für die Teilnehmenden
+## Arbeitsauftrag für die Teilnehmer
 
 ### Schritt 1: Fehlschläge verstehen
 
@@ -1009,44 +862,3 @@ Besprecht zum Abschluss:
 5. Wie unterscheidet sich die Verantwortung des Menschen in Aufgabe 3 von der in
    den Aufgaben 1 und 2?
 
-## Hinweise für die Schulungsleitung
-
-- Der Rollen- und Regelwechsel (Codeänderung jetzt erlaubt) sollte explizit
-  benannt werden.
-- Besonders darauf achten, dass die Tests nicht verändert werden, um sie grün zu
-  bekommen — dies ist der zentrale didaktische Punkt der Aufgabe.
-- Auf einen echten, erneuten Testlauf als Nachweis bestehen; ein bloßes „müsste
-  jetzt funktionieren“ genügt nicht.
-- Die Pflege von Changelog und Entscheidungsdokumentation als festen Bestandteil
-  der Behebung einfordern.
-
-## Empfohlener Zeitrahmen
-
-| Abschnitt | Richtwert |
-|---|---:|
-| Fehlschläge verstehen (Soll vs. Ist) | 10 Minuten |
-| Behebung durch Claude Code durchführen lassen | 10 Minuten |
-| Ursachenanalyse und Behebung bewerten | 15 Minuten |
-| Regressionsnachweis (erneuter Testlauf) | 10 Minuten |
-| Dokumentation nachziehen | 5 Minuten |
-| Review und Reflexion | 10 Minuten |
-| **Gesamt** | **60 Minuten** |
-
-Steht weniger Zeit zur Verfügung, kann die Dokumentationspflege verkürzt werden;
-der Regressionsnachweis darf nicht entfallen.
-
-## Übergang zur nächsten Aufgabe
-
-Mit einer belegten Behebung und grüner Suite ist der Kreislauf aus Anforderung,
-Testdokumentation, Automatisierung und Fehlerbehebung vollständig durchlaufen.
-
-Mögliche Anschlussthemen für weitere Aufgaben:
-
-> Bindet die Robot-Framework-Suite in eine CI-Pipeline ein, sodass die Tests bei
-> jeder Änderung automatisch ausgeführt werden.
-
-> Weitet die Automatisierung auf weitere, bislang manuelle Testfälle aus und
-> begründet, welche Fälle bewusst manuell bleiben.
-
-Damit verschiebt sich der Fokus von der einmaligen Erstellung hin zur
-dauerhaften, automatisierten Absicherung der Anwendung.
