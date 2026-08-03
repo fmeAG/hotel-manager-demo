@@ -602,6 +602,19 @@ Die KI darf nicht:
 
 ## Arbeitsauftrag für die Teilnehmer
 
+### Voraussetzung: Robot-Framework-Skill installieren
+
+Installiert vor der ersten Verwendung von Robot Framework den dafür vorgesehenen
+Skill im Projektverzeichnis:
+
+```bash
+npx skills add fmeag/skills
+```
+
+Folgt den Anweisungen des Installers. Erst nach erfolgreicher Installation darf
+Claude Code Robot-Framework-Tests erstellen oder ausführen.
+
+
 ### Schritt 1: Testumgebung vorbereiten
 
 Startet die Anwendung in einem definierten Ausgangszustand. Empfohlen wird eine
@@ -830,6 +843,141 @@ Haltet die Behebung nachvollziehbar fest:
 - `docs/changelog.md`: Eintrag unter „Fixed“,
 - `docs/decisions.md`: kurze Entscheidung zur gewählten Behebung inkl.
   verworfener Alternativen.
+
+---
+
+# Schulungsaufgabe 4 (optional): Benutzerdokumentation mit Screenshots erstellen
+
+## Einordnung
+
+Diese optionale Aufgabe löst sich bewusst von Robot Framework und der
+Testautomatisierung. Die Teilnehmenden erstellen eine Benutzerdokumentation für
+die nun geprüfte und fehlerbereinigte Hotel-Anwendung. Dafür nutzen sie
+bestätigte Abläufe aus der Testdokumentation und automatisch erzeugte
+Screenshots der tatsächlich laufenden Anwendung.
+
+Die Testfälle dienen als fachliche Quelle für Vorbedingungen und Abläufe. Sie
+sind jedoch keine Benutzerdokumentation: Technische Prüfschritte, Negativfälle
+und interne Details werden nicht übernommen.
+
+## Lernziele
+
+Nach der Aufgabe können die Teilnehmer:
+
+- geprüfte Produktinformationen zielgruppengerecht für Anwender aufbereiten,
+- eine Browser-Automatisierung zum reproduzierbaren Erstellen von Screenshots
+  einsetzen,
+- Testfälle als Quelle nutzen, ohne Test- und Benutzerdokumentation zu vermischen,
+- verständliche Schritt-für-Schritt-Anleitungen mit passenden Screenshots prüfen,
+- erkennen, dass auch KI-generierte Benutzerdokumentation fachliches Review
+  benötigt.
+
+## Erwartetes Ergebnis
+
+Am Ende der Aufgabe liegt eine Benutzerdokumentation mit Screenshots vor:
+
+```text
+docs/
+└── user-guide/
+    ├── README.md
+    └── images/
+        ├── check-in.png
+        ├── message-to-room.png
+        └── guest-chat.png
+```
+
+Die Dokumentation beschreibt die wesentlichen Bedienabläufe der Hotel-Anwendung
+aus Sicht von Rezeption und Gast. Sie enthält ausschließlich Screenshots der
+laufenden, fehlerbereinigten Anwendung mit plausiblen, nicht vertraulichen
+Beispieldaten.
+
+## Wichtige Arbeitsregel
+
+Robot Framework ist für diese Aufgabe **keine Voraussetzung**. Die Screenshots
+werden mit einer geeigneten Browser-Automatisierung erzeugt; sie muss die echte
+Anwendung bedienen und jeden Screenshot in einem definierten Zustand erstellen.
+
+Die KI darf:
+
+- die vorhandene Test- und Projektdokumentation als Quelle auswerten,
+- die Anwendung mit sicheren Beispieldaten in definierte Zustände versetzen,
+- Screenshots automatisch erzeugen und in die Dokumentation einbinden,
+- verständliche Entwürfe für die Benutzerdokumentation erstellen.
+
+Die KI darf nicht:
+
+- Anwendungscode, Testfälle oder die fachliche Testdokumentation verändern,
+- technische Testschritte, interne IDs oder Fehlerdetails als Bedienanleitung
+  ausgeben,
+- Screenshots aus einem unklaren Zustand oder mit vertraulichen Echtdaten
+  verwenden,
+- nicht belegte Funktionen oder erwartetes Verhalten ergänzen.
+
+## Arbeitsauftrag für die Teilnehmer
+
+### Schritt 1: Benutzerdokumentation automatisiert erzeugen lassen
+
+Startet die Anwendung mit einer separaten Test-Datenbank in einem definierten
+Zustand. Gebt Claude Code anschließend beispielsweise diesen Auftrag:
+
+> Erstelle eine deutsche Benutzerdokumentation für die Hotel-Anwendung unter
+> `docs/user-guide/README.md` und speichere die zugehörigen Screenshots unter
+> `docs/user-guide/images/`.
+>
+> Nutze `docs/overview.md`, die geprüfte Testdokumentation in `docs/testing/`
+> sowie die tatsächlich laufende Anwendung als Quellen. Dokumentiere nur
+> bestätigte, für Anwender relevante Abläufe: Zimmer und Gäste verwalten,
+> Check-in, Check-out, Nachricht an ein Zimmer senden sowie Gastnachrichten
+> lesen und beantworten.
+>
+> Erzeuge die Screenshots automatisiert durch Bedienung der laufenden Anwendung.
+> Stelle für jeden Screenshot einen definierten Zustand mit plausiblen,
+> nicht vertraulichen Beispieldaten her. Verwende keine Screenshots aus
+> Testberichten und keine Robot-Framework-Ausgabe.
+>
+> Schreibe kurze, nummerierte Anleitungen aus Sicht der jeweiligen Nutzerrolle.
+> Erkläre weder API, Datenbank, Testautomatisierung noch bekannte Produktfehler.
+> Verändere ausschließlich Dateien unter `docs/user-guide/`. Nenne anschließend
+> die verwendeten Quellen und alle erzeugten oder veränderten Dateien.
+
+### Schritt 2: Ergebnis gezielt prüfen
+
+Prüft nur die erzeugte Benutzerdokumentation und die referenzierten Screenshots:
+
+- Beschreibt jede Anleitung einen tatsächlich vorhandenen und verständlichen Ablauf?
+- Passt jeder Screenshot exakt zum zugehörigen Schritt?
+- Sind Rollen, Bezeichnungen und sichtbare Statuswerte korrekt?
+- Enthalten Text und Bilder keine Testdetails, technischen Interna oder
+  vertraulichen Daten?
+- Können Rezeption und Gast die Anleitung ohne Kenntnis der Testfälle verwenden?
+
+Korrigiert festgestellte Abweichungen gezielt in `docs/user-guide/`.
+
+## Definition of Done
+
+Die Aufgabe ist abgeschlossen, wenn:
+
+- `docs/user-guide/README.md` die wesentlichen Anwenderabläufe verständlich beschreibt,
+- alle eingebundenen Screenshots automatisiert aus der laufenden Anwendung
+  erzeugt wurden,
+- jeder Screenshot zum beschriebenen Schritt passt,
+- die Dokumentation keine Test- oder Implementierungsdetails enthält,
+- ausschließlich Dateien unter `docs/user-guide/` verändert wurden.
+
+## Reflexion
+
+Besprecht zum Abschluss:
+
+1. Welche Informationen aus den Testfällen waren für die Benutzerdokumentation
+   hilfreich, welche ungeeignet?
+2. Welche Risiken entstehen durch automatisch erzeugte, aber nicht geprüfte
+   Screenshots?
+3. Was unterscheidet einen reproduzierbaren Testablauf von einer hilfreichen
+   Bedienanleitung?
+4. Welche Teile der Dokumentation müssten bei einer UI-Änderung erneut erzeugt
+   und geprüft werden?
+
+---
 
 ## Gemeinsames Review
 
