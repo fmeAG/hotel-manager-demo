@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.10" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Schulungsaufgaben: KI-gestütztes Testing</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff;
+      --fg: #1f2328;
+      --muted: #57606a;
+      --border: #d0d7de;
+      --code-bg: #f6f8fa;
+      --link: #0969da;
+      --accent: #8250df;
+      --table-head-bg: #f6f8fa;
+      --quote-bg: #f6f8fa;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --fg: #e6edf3;
+        --muted: #9198a1;
+        --border: #30363d;
+        --code-bg: #161b22;
+        --link: #4493f8;
+        --accent: #a371f7;
+        --table-head-bg: #161b22;
+        --quote-bg: #161b22;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      line-height: 1.65;
+      font-size: 16px;
+    }
+    #title-block-header,
+    #TOC,
+    main,
+    body > h1,
+    body > h2,
+    body > p,
+    body > ul,
+    body > ol,
+    body > blockquote,
+    body > pre,
+    body > table {
+      max-width: 860px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    body > * { max-width: 860px; margin-left: auto; margin-right: auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+    #title-block-header {
+      padding-top: 2.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+    #title-block-header h1 {
+      font-size: 2rem;
+      margin: 0;
+    }
+    h1, h2, h3, h4 {
+      font-weight: 600;
+      line-height: 1.3;
+      scroll-margin-top: 1rem;
+    }
+    h1 { font-size: 1.8rem; margin-top: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; }
+    h2 { font-size: 1.4rem; margin-top: 2rem; color: var(--accent); }
+    h3 { font-size: 1.15rem; margin-top: 1.5rem; }
+    h4 { font-size: 1rem; margin-top: 1.2rem; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    p, ul, ol { margin: 0.8rem 0; }
+    li { margin: 0.3rem 0; }
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2.5rem auto;
+      max-width: 860px;
+    }
+    code {
+      background: var(--code-bg);
+      border-radius: 4px;
+      padding: 0.15em 0.4em;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.88em;
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      font-size: 0.85em;
+    }
+    blockquote {
+      background: var(--quote-bg);
+      border-left: 4px solid var(--accent);
+      margin: 1rem 0;
+      padding: 0.6rem 1rem;
+      border-radius: 0 6px 6px 0;
+      color: var(--muted);
+    }
+    blockquote p { margin: 0.4rem 0; }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1.2rem 0;
+      font-size: 0.92em;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--table-head-bg); font-weight: 600; }
+    tr:nth-child(even) td { background: color-mix(in srgb, var(--table-head-bg) 40%, transparent); }
+    #TOC {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem 1.5rem 1.2rem 2.2rem;
+      margin-top: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    #TOC ul { margin: 0.3rem 0; }
+    #TOC > ul { padding-left: 1rem; }
+    #TOC a { color: var(--fg); }
+    #TOC a:hover { color: var(--link); }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Schulungsaufgaben: KI-gestütztes Testing</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#schulungsaufgabe-1-testdokumentation-mit-ki-erarbeiten"
+id="toc-schulungsaufgabe-1-testdokumentation-mit-ki-erarbeiten">Schulungsaufgabe
+1: Testdokumentation mit KI erarbeiten</a>
+<ul>
+<li><a href="#einordnung" id="toc-einordnung">Einordnung</a></li>
+<li><a href="#ausgangssituation"
+id="toc-ausgangssituation">Ausgangssituation</a></li>
+<li><a href="#lernziele" id="toc-lernziele">Lernziele</a></li>
+<li><a href="#erwartetes-ergebnis"
+id="toc-erwartetes-ergebnis">Erwartetes Ergebnis</a></li>
+<li><a href="#wichtige-arbeitsregel"
+id="toc-wichtige-arbeitsregel">Wichtige Arbeitsregel</a></li>
+<li><a href="#kennzeichnung-von-ergebnissen"
+id="toc-kennzeichnung-von-ergebnissen">Kennzeichnung von
+Ergebnissen</a></li>
+</ul></li>
+<li><a href="#arbeitsauftrag" id="toc-arbeitsauftrag">Arbeitsauftrag</a>
+<ul>
+<li><a href="#schritt-1-anwendung-starten-und-erkunden"
+id="toc-schritt-1-anwendung-starten-und-erkunden">Schritt 1: Anwendung
+starten und erkunden</a></li>
+<li><a href="#schritt-2-projekt-mit-claude-code-analysieren"
+id="toc-schritt-2-projekt-mit-claude-code-analysieren">Schritt 2:
+Projekt mit Claude Code analysieren</a></li>
+<li><a href="#schritt-3-testbasis-dokumentieren"
+id="toc-schritt-3-testbasis-dokumentieren">Schritt 3: Testbasis
+dokumentieren</a></li>
+<li><a href="#schritt-4-akzeptanzkriterien-formulieren"
+id="toc-schritt-4-akzeptanzkriterien-formulieren">Schritt 4:
+Akzeptanzkriterien formulieren</a></li>
+<li><a href="#schritt-5-risiken-und-testideen-ableiten"
+id="toc-schritt-5-risiken-und-testideen-ableiten">Schritt 5: Risiken und
+Testideen ableiten</a></li>
+<li><a href="#schritt-6-konkrete-testfälle-erstellen"
+id="toc-schritt-6-konkrete-testfälle-erstellen">Schritt 6: Konkrete
+Testfälle erstellen</a></li>
+<li><a href="#schritt-7-nachverfolgbarkeit-herstellen"
+id="toc-schritt-7-nachverfolgbarkeit-herstellen">Schritt 7:
+Nachverfolgbarkeit herstellen</a></li>
+</ul></li>
+<li><a href="#gemeinsames-review"
+id="toc-gemeinsames-review">Gemeinsames Review</a>
+<ul>
+<li><a href="#reviewfragen" id="toc-reviewfragen">Reviewfragen</a></li>
+</ul></li>
+<li><a href="#reflexion" id="toc-reflexion">Reflexion</a>
+<ul>
+<li><a href="#zu-merken" id="toc-zu-merken">Zu merken!</a></li>
+</ul></li>
+<li><a
+href="#schulungsaufgabe-2-testfälle-mit-robot-framework-automatisieren"
+id="toc-schulungsaufgabe-2-testfälle-mit-robot-framework-automatisieren">Schulungsaufgabe
+2: Testfälle mit Robot Framework automatisieren</a>
+<ul>
+<li><a href="#einordnung-1" id="toc-einordnung-1">Einordnung</a></li>
+<li><a href="#ausgangssituation-1"
+id="toc-ausgangssituation-1">Ausgangssituation</a></li>
+<li><a href="#lernziele-1" id="toc-lernziele-1">Lernziele</a></li>
+<li><a href="#erwartetes-ergebnis-1"
+id="toc-erwartetes-ergebnis-1">Erwartetes Ergebnis</a></li>
+<li><a href="#wichtige-arbeitsregel-1"
+id="toc-wichtige-arbeitsregel-1">Wichtige Arbeitsregel</a></li>
+<li><a href="#arbeitsauftrag-für-die-teilnehmer"
+id="toc-arbeitsauftrag-für-die-teilnehmer">Arbeitsauftrag für die
+Teilnehmer</a></li>
+<li><a href="#gemeinsames-review-1"
+id="toc-gemeinsames-review-1">Gemeinsames Review</a></li>
+<li><a href="#reflexion-1" id="toc-reflexion-1">Reflexion</a></li>
+</ul></li>
+<li><a href="#schulungsaufgabe-3-produktfehler-testgetrieben-beheben"
+id="toc-schulungsaufgabe-3-produktfehler-testgetrieben-beheben">Schulungsaufgabe
+3: Produktfehler testgetrieben beheben</a>
+<ul>
+<li><a href="#einordnung-2" id="toc-einordnung-2">Einordnung</a></li>
+<li><a href="#ausgangssituation-2"
+id="toc-ausgangssituation-2">Ausgangssituation</a></li>
+<li><a href="#lernziele-2" id="toc-lernziele-2">Lernziele</a></li>
+<li><a href="#erwartetes-ergebnis-2"
+id="toc-erwartetes-ergebnis-2">Erwartetes Ergebnis</a></li>
+<li><a href="#wichtige-arbeitsregel-2"
+id="toc-wichtige-arbeitsregel-2">Wichtige Arbeitsregel</a></li>
+<li><a href="#arbeitsauftrag-für-die-teilnehmer-1"
+id="toc-arbeitsauftrag-für-die-teilnehmer-1">Arbeitsauftrag für die
+Teilnehmer</a></li>
+</ul></li>
+<li><a
+href="#schulungsaufgabe-4-optional-benutzerdokumentation-mit-screenshots-erstellen"
+id="toc-schulungsaufgabe-4-optional-benutzerdokumentation-mit-screenshots-erstellen">Schulungsaufgabe
+4 (optional): Benutzerdokumentation mit Screenshots erstellen</a>
+<ul>
+<li><a href="#einordnung-3" id="toc-einordnung-3">Einordnung</a></li>
+<li><a href="#lernziele-3" id="toc-lernziele-3">Lernziele</a></li>
+<li><a href="#erwartetes-ergebnis-3"
+id="toc-erwartetes-ergebnis-3">Erwartetes Ergebnis</a></li>
+<li><a href="#wichtige-arbeitsregel-3"
+id="toc-wichtige-arbeitsregel-3">Wichtige Arbeitsregel</a></li>
+<li><a href="#arbeitsauftrag-für-die-teilnehmer-2"
+id="toc-arbeitsauftrag-für-die-teilnehmer-2">Arbeitsauftrag für die
+Teilnehmer</a></li>
+<li><a href="#definition-of-done-1"
+id="toc-definition-of-done-1">Definition of Done</a></li>
+<li><a href="#reflexion-2" id="toc-reflexion-2">Reflexion</a></li>
+<li><a href="#gemeinsames-review-2"
+id="toc-gemeinsames-review-2">Gemeinsames Review</a></li>
+<li><a href="#reflexion-3" id="toc-reflexion-3">Reflexion</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1
+id="schulungsaufgabe-1-testdokumentation-mit-ki-erarbeiten">Schulungsaufgabe
+1: Testdokumentation mit KI erarbeiten</h1>
+<h2 id="einordnung">Einordnung</h2>
+<p>Diese Aufgabe ist der erste praktische Teil der Testerschulung.
+Zunächst lernen wir die Hotel-Anwendung und ihre Chatfunktion kennen.
+Anschließend nutzen wir Claude Code, um aus der Anwendung, der
+Spezifikation und der Projektdokumentation eine belastbare Testbasis zu
+entwickeln.</p>
+<p>In dieser Aufgabe werden noch keine automatisierten Tests erstellt.
+Robot Framework wird erst in einer späteren Aufgabe eingeführt.</p>
+<h2 id="ausgangssituation">Ausgangssituation</h2>
+<p>Das Projekt enthält zu Beginn:</p>
+<ul>
+<li>eine lauffähige Hotel-Anwendung mit Chatfunktion,</li>
+<li>eine fachliche Spezifikation der Chatfunktion,</li>
+<li>eine Beschreibung der Anwendung und ihrer Schnittstellen,</li>
+<li>den Quellcode der Anwendung,</li>
+<li>die vorgegebene Struktur für Testdokumentation.</li>
+</ul>
+<p>Das Projekt enthält zu Beginn noch nicht:</p>
+<ul>
+<li>ausgearbeitete Akzeptanzkriterien für die Schulungsaufgabe,</li>
+<li>eine dokumentierte Testbasis,</li>
+<li>eine Risikoanalyse,</li>
+<li>konkrete Testfälle,</li>
+<li>Robot-Framework-Tests,</li>
+<li>Hinweise auf eventuell vorbereitete Produktfehler.</li>
+</ul>
+<h2 id="lernziele">Lernziele</h2>
+<p>Nach dieser Aufgabe können die Teilnehmer:</p>
+<ul>
+<li>eine unbekannte Anwendung aus Sicht eines Testers erkunden,</li>
+<li>Claude Code zur strukturierten Analyse eines Projekts
+einsetzen,</li>
+<li>belegte Informationen von Annahmen der KI unterscheiden,</li>
+<li>unklare oder widersprüchliche Anforderungen erkennen,</li>
+<li>prüfbare Akzeptanzkriterien formulieren,</li>
+<li>Produktrisiken und geeignete Testideen ableiten,</li>
+<li>aus Akzeptanzkriterien konkrete Testfälle erstellen,</li>
+<li>KI-generierte Testdokumentation fachlich prüfen und verbessern,</li>
+<li>Anforderungen, Risiken und Testfälle nachvollziehbar miteinander
+verbinden.</li>
+</ul>
+<h2 id="erwartetes-ergebnis">Erwartetes Ergebnis</h2>
+<p>Am Ende der Aufgabe liegt im Projekt eine erste, fachlich geprüfte
+Testdokumentation vor:</p>
+<pre class="text"><code>docs/
+└── testing/
+    ├── testbasis.md
+    ├── akzeptanzkriterien.md
+    ├── risikoanalyse.md
+    ├── testfaelle.md
+    └── traceability.md</code></pre>
+<p>Die Dokumente bilden später die Grundlage für die Auswahl und
+Automatisierung von Testfällen mit Robot Framework.</p>
+<h2 id="wichtige-arbeitsregel">Wichtige Arbeitsregel</h2>
+<p>Claude Code unterstützt die Analyse und erstellt Entwürfe. Die
+fachliche Verantwortung bleibt bei euch!</p>
+<p>Die KI darf:</p>
+<ul>
+<li>Informationen aus vorhandenen Quellen zusammenführen,</li>
+<li>Unklarheiten und Widersprüche aufzeigen,</li>
+<li>Akzeptanzkriterien vorschlagen,</li>
+<li>Risiken und Testideen vorschlagen,</li>
+<li>Testfälle als Entwurf formulieren,</li>
+<li>Dokumente nach Vorgabe anlegen und überarbeiten.</li>
+</ul>
+<p>Die KI darf nicht:</p>
+<ul>
+<li>fehlende fachliche Entscheidungen als Tatsachen darstellen,</li>
+<li>unbelegte Anforderungen erfinden,</li>
+<li>den Anwendungscode verändern,</li>
+<li>vorbereitete Produktfehler beheben,</li>
+<li>ohne menschliches Review endgültig über erwartetes Verhalten
+entscheiden.</li>
+</ul>
+<h2 id="kennzeichnung-von-ergebnissen">Kennzeichnung von
+Ergebnissen</h2>
+<p>Wichtige Aussagen werden während der Analyse gekennzeichnet:</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Kennzeichnung</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BELEGT</code></td>
+<td>Die Aussage lässt sich durch eine vorhandene Quelle nachweisen.</td>
+</tr>
+<tr>
+<td><code>ANNAHME</code></td>
+<td>Die Aussage wurde angenommen, ist aber nicht ausreichend
+belegt.</td>
+</tr>
+<tr>
+<td><code>OFFEN</code></td>
+<td>Für diese Frage fehlt eine fachliche Entscheidung.</td>
+</tr>
+<tr>
+<td><code>WIDERSPRUCH</code></td>
+<td>Zwei Quellen oder Quelle und Anwendung stimmen nicht überein.</td>
+</tr>
+</tbody>
+</table>
+<p>Eine Annahme der KI darf nicht unbemerkt zu einem Akzeptanzkriterium
+oder einem erwarteten Testergebnis werden.</p>
+<hr />
+<h1 id="arbeitsauftrag">Arbeitsauftrag</h1>
+<h2 id="schritt-1-anwendung-starten-und-erkunden">Schritt 1: Anwendung
+starten und erkunden</h2>
+<p>Startet die Hotel-Anwendung entsprechend der bereitgestellten
+Startanleitung. Öffnet die Anwendung im Browser und betrachtet
+insbesondere die Chatfunktion.</p>
+<p>Untersucht die Anwendung zunächst selbst:</p>
+<ul>
+<li>Welche Funktionen bietet der Chat?</li>
+<li>Wer kann Nachrichten senden und lesen?</li>
+<li>Wie wird ein Zielzimmer ausgewählt?</li>
+<li>Welche Informationen werden zu einer Nachricht angezeigt?</li>
+<li>Welche Statuswerte sind sichtbar?</li>
+<li>Welche Eingaben sind möglich?</li>
+<li>Welche Rückmeldungen zeigt die Anwendung?</li>
+<li>Was geschieht bei ungewöhnlichen oder ungültigen Eingaben?</li>
+<li>Welche fachlichen Fragen entstehen?</li>
+</ul>
+<p>In diesem Schritt geht es noch nicht darum, möglichst viele Fehler zu
+finden. Ziel ist ein gemeinsames Verständnis der Anwendung.</p>
+<p>Haltet erste Beobachtungen und offene Fragen stichpunktartig
+fest.</p>
+<h2 id="schritt-2-projekt-mit-claude-code-analysieren">Schritt 2:
+Projekt mit Claude Code analysieren</h2>
+<p>Lasst Claude Code die vorhandenen Spezifikationen, die
+Projektdokumentation und die relevanten Teile der Anwendung
+untersuchen.</p>
+<p>Verwendet beispielsweise folgenden Auftrag:</p>
+<blockquote>
+<p>Analysiere dieses Projekt aus Sicht eines Softwaretesters. Betrachte
+insbesondere die Hotel- und Chatfunktion.</p>
+<p>Untersuche die vorhandenen Spezifikationen, die Projektdokumentation
+sowie die relevanten Teile der Anwendung. Beschreibe:</p>
+<ul>
+<li>die vorhandenen Funktionen,</li>
+<li>die verfügbaren fachlichen und technischen Quellen,</li>
+<li>offene fachliche Fragen,</li>
+<li>erkennbare Produktrisiken,</li>
+<li>mögliche Widersprüche zwischen Spezifikation, Dokumentation und
+Implementierung.</li>
+</ul>
+<p>Kennzeichne jede wichtige Aussage als BELEGT, ANNAHME, OFFEN oder
+WIDERSPRUCH. Nenne bei belegten Aussagen die konkrete Quelldatei und
+möglichst den zugehörigen Abschnitt oder die relevante
+Codefundstelle.</p>
+<p>Erstelle noch keine Akzeptanzkriterien und keine Testfälle. Verändere
+weder Anwendungscode noch vorhandene Tests.</p>
+<p>Speichere ausschließlich das Analyseergebnis in:</p>
+<p>docs/testing/analyse_yyyymmdd.md</p>
+<p>Weitere Dateien dürfen nicht verändert werden. Zeige mir anschließend
+eine kurze Zusammenfassung der Analyse und die Liste aller veränderten
+Dateien.</p>
+</blockquote>
+<p>Disskutiert die Antwort gemeinsam:</p>
+<ul>
+<li>Hat Claude Code alle relevanten Quellen berücksichtigt?</li>
+<li>Sind die genannten Quellen tatsächlich vorhanden?</li>
+<li>Hat die KI Verhalten behauptet, das nirgends beschrieben ist?</li>
+<li>Stimmen die Aussagen mit euren Beobachtungen aus der Anwendung
+überein?</li>
+<li>Welche Fragen müssen durch einen Product Owner oder fachlichen
+Ansprechpartner beantwortet werden?</li>
+</ul>
+<h2 id="schritt-3-testbasis-dokumentieren">Schritt 3: Testbasis
+dokumentieren</h2>
+<p>Erstellt mit Unterstützung von Claude Code die Datei
+<code>docs/testing/testbasis.md</code>.</p>
+<p>Sie soll mindestens enthalten:</p>
+<ol type="1">
+<li>Ziel der Testaktivitäten</li>
+<li>betrachtete Quellen</li>
+<li>Testgegenstand</li>
+<li>Funktionen im Testumfang</li>
+<li>Funktionen außerhalb des Testumfangs</li>
+<li>bekannte Rahmenbedingungen</li>
+<li>offene fachliche Fragen</li>
+<li>dokumentierte Annahmen</li>
+<li>gefundene Widersprüche</li>
+</ol>
+<p>Möglicher Auftrag an Claude Code:</p>
+<blockquote>
+<p>Erstelle auf Grundlage der geprüften Analyse in
+docs/testing/analyse_xxxxxxxx.md einen Entwurf für
+docs/testing/testbasis.md.</p>
+<p>Berücksichtige zusätzlich die in der Analyse genannten
+Originalquellen. Übernimm Aussagen nicht ungeprüft allein deshalb, weil
+sie im Analyseprotokoll stehen.</p>
+<p>Die Testbasis muss mindestens folgende Abschnitte enthalten:</p>
+<ol type="1">
+<li>Ziel der Testaktivitäten</li>
+<li>Testgegenstand</li>
+<li>betrachtete fachliche und technische Quellen</li>
+<li>Funktionen innerhalb des Testumfangs</li>
+<li>Funktionen außerhalb des Testumfangs</li>
+<li>bekannte Rahmenbedingungen und Einschränkungen</li>
+<li>belegte fachliche Anforderungen</li>
+<li>dokumentierte Annahmen</li>
+<li>offene fachliche Fragen</li>
+<li>gefundene Widersprüche</li>
+<li>erste bekannte Produktrisiken</li>
+</ol>
+<p>Beachte dabei folgende Regeln:</p>
+<ul>
+<li>Verwende für bestätigte Aussagen ausschließlich belegte
+Informationen.</li>
+<li>Nenne bei belegten Aussagen die konkrete Quelle.</li>
+<li>Führe ANNAHME, OFFEN und WIDERSPRUCH in getrennten Abschnitten.</li>
+<li>Löse offene Fragen oder Widersprüche nicht eigenständig auf.</li>
+<li>Stelle Implementierungsverhalten nicht automatisch als fachliche
+Anforderung dar.</li>
+<li>Formuliere noch keine Akzeptanzkriterien und keine Testfälle.</li>
+<li>Verändere weder Anwendungscode noch vorhandene Tests.</li>
+<li>Verändere ausschließlich docs/testing/testbasis.md.</li>
+</ul>
+<p>Zeige anschließend:</p>
+<ul>
+<li>eine kurze Zusammenfassung des Entwurfs,</li>
+<li>die wichtigsten weiterhin offenen Fragen,</li>
+<li>alle veränderten Dateien.</li>
+</ul>
+</blockquote>
+<p>Prüft den erzeugten Entwurf und korrigiert ihn bei Bedarf.</p>
+<h2 id="schritt-4-akzeptanzkriterien-formulieren">Schritt 4:
+Akzeptanzkriterien formulieren</h2>
+<p>Leitet aus den bestätigten Anforderungen prüfbare Akzeptanzkriterien
+ab.</p>
+<p>Jedes Akzeptanzkriterium erhält:</p>
+<ul>
+<li>eine eindeutige ID,</li>
+<li>einen verständlichen Titel,</li>
+<li>eine Quelle,</li>
+<li>eine Beschreibung im Format „Gegeben – Wenn – Dann“,</li>
+<li>gegebenenfalls einen Verweis auf eine noch offene Frage.</li>
+</ul>
+<p>Beispiel:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## AC-CHAT-001: Nachricht an ein belegtes Zimmer senden</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Quelle:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`specs/chat_feature_spec.md`</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>Gegeben, ein belegtes Zimmer existiert</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>und ein Gast ist diesem Zimmer zugeordnet,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>wenn die Rezeption eine nicht leere Nachricht an das Zimmer sendet,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>dann wird die Nachricht gespeichert</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>und mit dem Status <span class="in">`sent`</span> angezeigt.</span></code></pre></div>
+<p>Möglicher Auftrag an Claude Code:</p>
+<blockquote>
+<p>Erstelle auf Grundlage der fachlich geprüften
+docs/testing/testbasis.md einen Entwurf für
+docs/testing/akzeptanzkriterien.md.</p>
+<p>Leite Akzeptanzkriterien ausschließlich aus belegten und bestätigten
+fachlichen Anforderungen ab. Implementiertes Verhalten allein gilt nicht
+automatisch als bestätigte Anforderung.</p>
+<p>Jedes Akzeptanzkriterium muss enthalten:</p>
+<ul>
+<li>eine eindeutige ID im Format AC-CHAT-NNN,</li>
+<li>einen kurzen, eindeutigen Titel,</li>
+<li>die zugrunde liegende Anforderung,</li>
+<li>eine konkrete Quellenangabe,</li>
+<li>eine Formulierung als Gegeben – Wenn – Dann,</li>
+<li>gegebenenfalls relevante Vorbedingungen,</li>
+<li>einen Verweis auf zugehörige offene Fragen oder Widersprüche.</li>
+</ul>
+<p>Beachte folgende Qualitätsregeln:</p>
+<ul>
+<li><p>Ein Akzeptanzkriterium beschreibt möglichst nur ein prüfbares
+Verhalten.</p></li>
+<li><p>Das erwartete Ergebnis muss eindeutig und beobachtbar
+sein.</p></li>
+<li><p>Formuliere fachlich und unabhängig von der technischen
+Umsetzung.</p></li>
+<li><p>Verwende keine unbestimmten Begriffe wie „korrekt“, „schnell“,
+„geeignet“ oder „benutzerfreundlich“, sofern diese nicht näher definiert
+sind.</p></li>
+<li><p>Ergänze keine Grenzwerte, Fehlermeldungen, Statuscodes oder
+Geschäftsregeln, die nicht belegt sind.</p></li>
+<li><p>Erstelle kein Akzeptanzkriterium, wenn das erwartete Verhalten
+noch offen oder widersprüchlich ist.</p></li>
+<li><p>Führe solche Fälle stattdessen in einem Abschnitt Nicht
+ableitbare Akzeptanzkriterien auf und verweise auf die entsprechende
+offene Frage oder den Widerspruch aus der Testbasis.</p></li>
+<li><p>Formuliere noch keine konkreten Testfälle und nimm noch keine
+Risikobewertung vor.</p></li>
+<li><p>Verändere weder Anwendungscode noch vorhandene Tests.</p></li>
+<li><p>Verändere ausschließlich
+docs/testing/akzeptanzkriterien.md.</p></li>
+</ul>
+<p>Verwende für jedes Akzeptanzkriterium folgende Struktur:</p>
+<h2 id="ac-chat-nnn-titel">AC-CHAT-NNN: Titel</h2>
+<p><strong>Anforderung:</strong> Kurze Beschreibung der zugrunde
+liegenden fachlichen Anforderung.</p>
+<p><strong>Quelle:</strong> - <code>Pfad zur Quelldatei</code>,
+Abschnitt</p>
+<p><strong>Gegeben</strong> …</p>
+<p><strong>Wenn</strong> …</p>
+<p><strong>Dann</strong> …</p>
+<p><strong>Offene Bezüge:</strong> - Keine</p>
+<p>Prüfe den Entwurf abschließend selbst auf:</p>
+<ul>
+<li>eindeutige und beobachtbare Ergebnisse,</li>
+<li>korrekte Quellenangaben,</li>
+<li>unbelegte Annahmen,</li>
+<li>vermischte Verhaltensweisen,</li>
+<li>technische statt fachliche Formulierungen.</li>
+</ul>
+<p>Zeige anschließend eine kurze Zusammenfassung, die nicht ableitbaren
+Kriterien und alle veränderten Dateien.</p>
+</blockquote>
+<p>Prüft für jedes Akzeptanzkriterium:</p>
+<ul>
+<li>Ist das erwartete Verhalten eindeutig?</li>
+<li>Kann das Ergebnis beobachtet werden?</li>
+<li>Ist das Kriterium unabhängig von einer bestimmten technischen
+Umsetzung?</li>
+<li>Ist die Quelle korrekt?</li>
+<li>Enthält das Kriterium eine unbelegte Annahme?</li>
+<li>Kann aus dem Kriterium mindestens ein konkreter Test abgeleitet
+werden?</li>
+</ul>
+<h2 id="schritt-5-risiken-und-testideen-ableiten">Schritt 5: Risiken und
+Testideen ableiten</h2>
+<p>Ermittelt mögliche Produktrisiken. Betrachtet dabei nicht nur
+technische Fehler, sondern auch Auswirkungen auf Hotelmitarbeiter und
+Gäste.</p>
+<p>Beispiele für Fragestellungen:</p>
+<ul>
+<li>Was wäre besonders problematisch, wenn es nicht funktioniert?</li>
+<li>Könnte eine Nachricht dem falschen Zimmer zugeordnet werden?</li>
+<li>Könnten vertrauliche Informationen für falsche Personen sichtbar
+sein?</li>
+<li>Könnten Nachrichten verloren gehen oder doppelt gespeichert
+werden?</li>
+<li>Könnte ein Nachrichtenstatus falsch angezeigt werden?</li>
+<li>Was geschieht bei leeren, langen oder ungewöhnlichen
+Nachrichten?</li>
+<li>Bleiben Nachrichten nach einem Neustart erhalten?</li>
+</ul>
+<p>Dokumentiert die Ergebnisse in
+<code>docs/testing/risikoanalyse.md</code>.</p>
+<p>Jedes Risiko erhält mindestens:</p>
+<ul>
+<li>eine eindeutige ID,</li>
+<li>eine Beschreibung,</li>
+<li>die mögliche Auswirkung,</li>
+<li>eine grobe Eintrittswahrscheinlichkeit,</li>
+<li>eine Priorität,</li>
+<li>betroffene Akzeptanzkriterien,</li>
+<li>erste Testideen.</li>
+</ul>
+<p>Möglicher Auftrag an Claude Code:</p>
+<blockquote>
+<p>Erstelle auf Basis der bestätigten Akzeptanzkriterien einen Entwurf
+für <code>docs/testing/risikoanalyse.md</code>. Verwende IDs im Format
+<code>R-CHAT-NNN</code>. Beschreibe Auswirkung,
+Eintrittswahrscheinlichkeit und Priorität. Schlage positive Tests,
+negative Tests und relevante Grenzfälle vor. Begründe die Priorisierung.
+Weise ausdrücklich darauf hin, wenn eine Bewertung fachliche Annahmen
+enthält.</p>
+</blockquote>
+<p>Die KI schlägt Risiken und Prioritäten vor. Die endgültige Bewertung
+erfolgt durch die Teilnehmenden.</p>
+<h2 id="schritt-6-konkrete-testfälle-erstellen">Schritt 6: Konkrete
+Testfälle erstellen</h2>
+<p>Wählt die wichtigsten Akzeptanzkriterien und Risiken aus. Erstellt
+daraus konkrete Testfälle in
+<code>docs/testing/testfaelle.md</code>.</p>
+<p>Jeder Testfall enthält:</p>
+<ul>
+<li>eindeutige Testfall-ID,</li>
+<li>Titel und Testziel,</li>
+<li>zugehörige Akzeptanzkriterien,</li>
+<li>abgedeckte Risiken,</li>
+<li>Priorität,</li>
+<li>vorgesehene Testebene, zum Beispiel API oder Web-UI,</li>
+<li>Voraussetzungen,</li>
+<li>Testdaten,</li>
+<li>nachvollziehbare Schritte,</li>
+<li>konkrete erwartete Ergebnisse,</li>
+<li>Kennzeichnung, ob der Test ein Kandidat für Automatisierung
+ist.</li>
+</ul>
+<p>Beispielstruktur:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## TC-CHAT-001: Gültige Nachricht an ein Zimmer senden</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">### Bezug</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Akzeptanzkriterium: <span class="in">`AC-CHAT-001`</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Risiko: <span class="in">`R-CHAT-001`</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">### Einordnung</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Priorität: Hoch</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Testebene: API</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Automatisierungskandidat: Ja</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">### Voraussetzungen</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Zimmer 101 existiert.</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Ein Gast ist in Zimmer 101 eingecheckt.</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Die Anwendung befindet sich in einem definierten Ausgangszustand.</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="fu">### Testdaten</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Zimmer: 101</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Nachricht: <span class="in">`Das Frühstück beginnt morgen um 07:00 Uhr.`</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="fu">### Schritte</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Eine Nachricht mit den angegebenen Testdaten an Zimmer 101 senden.</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Die Nachrichten für Zimmer 101 abrufen.</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="fu">### Erwartete Ergebnisse</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Das Senden wird erfolgreich bestätigt.</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Die Nachricht wird vollständig und unverändert gespeichert.</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Die Nachricht ist Zimmer 101 zugeordnet.</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Der initiale Nachrichtenstatus entspricht dem Akzeptanzkriterium.</span></code></pre></div>
+<p>Möglicher Auftrag an Claude Code:</p>
+<blockquote>
+<p>Erstelle für die priorisierten Akzeptanzkriterien und Risiken einen
+Entwurf für <code>docs/testing/testfaelle.md</code>. Verwende IDs im
+Format <code>TC-CHAT-NNN</code>. Beschreibe Voraussetzungen, konkrete
+Testdaten, Schritte und erwartete Ergebnisse. Ordne jeden Testfall einer
+geeigneten Testebene zu. Markiere geeignete Kandidaten für eine spätere
+Automatisierung mit Robot Framework. Erfinde kein erwartetes Verhalten,
+das nicht durch ein bestätigtes Akzeptanzkriterium gedeckt ist.</p>
+</blockquote>
+<h2 id="schritt-7-nachverfolgbarkeit-herstellen">Schritt 7:
+Nachverfolgbarkeit herstellen</h2>
+<p>Erstellt abschließend <code>docs/testing/traceability.md</code>.</p>
+<p>Die Datei verbindet Akzeptanzkriterien, Risiken und Testfälle:</p>
+<table>
+<thead>
+<tr>
+<th>Akzeptanzkriterium</th>
+<th>Risiko</th>
+<th>Testfall</th>
+<th>Testebene</th>
+<th>Automatisiert</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AC-CHAT-001</code></td>
+<td><code>R-CHAT-001</code></td>
+<td><code>TC-CHAT-001</code></td>
+<td>API</td>
+<td>Nein</td>
+</tr>
+</tbody>
+</table>
+<p>Prüft anhand der Tabelle:</p>
+<ul>
+<li>Gibt es Akzeptanzkriterien ohne Testfall?</li>
+<li>Gibt es hoch priorisierte Risiken ohne Testfall?</li>
+<li>Gibt es Testfälle ohne Bezug zu einem Akzeptanzkriterium oder
+Risiko?</li>
+<li>Wurden unnötige oder doppelte Testfälle erzeugt?</li>
+<li>Welche Testfälle sind gute Kandidaten für die nächste Aufgabe?</li>
+</ul>
+<hr />
+<h1 id="gemeinsames-review">Gemeinsames Review</h1>
+<p>Die Aufgabe endet mit einem gemeinsamen Review der erstellten
+Dokumente.</p>
+<h2 id="reviewfragen">Reviewfragen</h2>
+<h3 id="testbasis">Testbasis</h3>
+<ul>
+<li>Sind Testumfang und Abgrenzung verständlich?</li>
+<li>Sind alle verwendeten Quellen genannt?</li>
+<li>Sind offene Fragen und Annahmen sichtbar?</li>
+<li>Wurden Widersprüche nachvollziehbar beschrieben?</li>
+</ul>
+<h3 id="akzeptanzkriterien">Akzeptanzkriterien</h3>
+<ul>
+<li>Ist jedes Kriterium eindeutig und beobachtbar?</li>
+<li>Ist das erwartete Verhalten fachlich bestätigt?</li>
+<li>Sind Kriterien unnötig technisch formuliert?</li>
+<li>Hat Claude Code unbelegte Regeln ergänzt?</li>
+</ul>
+<h3 id="risikoanalyse">Risikoanalyse</h3>
+<ul>
+<li>Sind die wichtigsten fachlichen Risiken enthalten?</li>
+<li>Ist die Priorisierung nachvollziehbar?</li>
+<li>Wurden nur leicht automatisierbare Fälle betrachtet oder auch
+wichtige schwierige Risiken?</li>
+</ul>
+<h3 id="testfälle">Testfälle</h3>
+<ul>
+<li>Hat jeder Testfall ein klares Ziel?</li>
+<li>Sind Voraussetzungen und Testdaten ausreichend beschrieben?</li>
+<li>Ist für jeden Schritt ein konkretes erwartetes Ergebnis
+vorhanden?</li>
+<li>Kann eine andere Person den Test ohne zusätzliche Erklärungen
+ausführen?</li>
+<li>Ist die ausgewählte Testebene sinnvoll?</li>
+</ul>
+<h3 id="nachverfolgbarkeit">Nachverfolgbarkeit</h3>
+<ul>
+<li>Sind Anforderungen, Risiken und Testfälle miteinander
+verbunden?</li>
+<li>Gibt es erkennbare Abdeckungslücken?</li>
+<li>Sind die wichtigsten Automatisierungskandidaten erkennbar?</li>
+</ul>
+<hr />
+<h1 id="reflexion">Reflexion</h1>
+<p>Besprecht zum Abschluss:</p>
+<ol type="1">
+<li>Welche Ergebnisse der KI waren unmittelbar hilfreich?</li>
+<li>Wo hat die KI Annahmen getroffen oder Anforderungen ergänzt?</li>
+<li>Welche Fehler wären ohne menschliches Review in der
+Testdokumentation geblieben?</li>
+<li>Hat die KI wichtige Risiken übersehen?</li>
+<li>Welche Informationen musste der Mensch fachlich bewerten?</li>
+<li>Wie hat die Dokumentationsstruktur die Arbeit unterstützt?</li>
+<li>Welchen Testfall würdet ihr als Erstes automatisieren und
+warum?</li>
+</ol>
+<h2 id="zu-merken">Zu merken!</h2>
+<p>Claude Code kann große Mengen an Projektinformationen analysieren,
+strukturieren und erste Testartefakte erstellen. Die KI kann jedoch
+nicht selbst entscheiden, welches fachliche Verhalten richtig ist.
+Tester bleiben verantwortlich für Testziel, erwartetes Ergebnis,
+Risikobewertung und Freigabe der Testdokumentation.</p>
+<hr />
+<h1
+id="schulungsaufgabe-2-testfälle-mit-robot-framework-automatisieren">Schulungsaufgabe
+2: Testfälle mit Robot Framework automatisieren</h1>
+<h2 id="einordnung-1">Einordnung</h2>
+<p>Diese Aufgabe baut unmittelbar auf der gerade erstellten
+Testdokumentation auf. Die Teilnehmer lassen aus den dokumentierten
+Testfällen (<code>docs/testing/testfaelle.md</code>) mit Claude Code
+eine ausführbare Robot-Framework-Testsuite erzeugen, führen sie gegen
+die laufende Anwendung aus und interpretieren die Ergebnisse.</p>
+<p>Der Anwendungscode wird in dieser Aufgabe noch <strong>nicht</strong>
+verändert. Ziel ist zunächst, das dokumentierte Soll-Verhalten in
+automatisierte Prüfungen zu überführen und den Ist-Zustand der Anwendung
+sichtbar zu machen — einschließlich etwaiger Abweichungen.</p>
+<h2 id="ausgangssituation-1">Ausgangssituation</h2>
+<p>Das Projekt enthält zu Beginn dieser Aufgabe:</p>
+<ul>
+<li>die fachlich geprüfte Testdokumentation aus Aufgabe 1
+(<code>testbasis.md</code>, <code>akzeptanzkriterien.md</code>,
+<code>risikoanalyse.md</code>, <code>testfaelle.md</code>),</li>
+<li>eine lauffähige Hotel-Anwendung mit REST-API und Browser-UI,</li>
+<li>eine installierte Testumgebung (Robot Framework, RequestsLibrary,
+Browser-Library).</li>
+</ul>
+<p>Das Projekt enthält zu Beginn noch nicht:</p>
+<ul>
+<li>eine ausführbare Robot-Framework-Testsuite,</li>
+<li>eine Auswertung, welche dokumentierten Testfälle die Anwendung
+tatsächlich erfüllt,</li>
+<li>eine belastbare Aussage über die vorbereiteten Produktfehler.</li>
+</ul>
+<h2 id="lernziele-1">Lernziele</h2>
+<p>Nach der Aufgabe können die Teilnehmer:</p>
+<ul>
+<li>dokumentierte Testfälle in ausführbare Robot-Framework-Tests
+überführen,</li>
+<li>Claude Code für die Erstellung einer wartbaren, mehrschichtigen
+Testsuite einsetzen,</li>
+<li>API-Tests (RequestsLibrary) und E2E-Tests (Browser-Library)
+unterscheiden und einordnen,</li>
+<li>die Rückverfolgbarkeit zwischen Testfall-ID und automatisiertem Test
+prüfen,</li>
+<li>Testergebnisse (bestanden / fehlgeschlagen / übersprungen) korrekt
+interpretieren,</li>
+<li>einen fehlgeschlagenen Test als Hinweis auf einen Produktfehler
+statt als Testfehler erkennen,</li>
+<li>beurteilen, welche Tests sinnvoll automatisierbar sind und welche
+manuell bleiben.</li>
+</ul>
+<h2 id="erwartetes-ergebnis-1">Erwartetes Ergebnis</h2>
+<p>Am Ende der Aufgabe liegt im Projekt eine ausführbare, nach Ebenen
+getrennte Testsuite vor:</p>
+<pre class="text"><code>tests/
+└── robot/
+    ├── resources/          # wiederverwendbare Keywords (API, UI, Variablen)
+    ├── api/                # Integrationstests auf API-Ebene
+    ├── e2e/                # End-to-End-Tests über die Browser-UI
+    └── README.md           # Ausführung, Voraussetzungen, Befunde</code></pre>
+<p>Ergänzend liegt ein dokumentierter Testlauf vor, der klar
+ausweist:</p>
+<ul>
+<li>welche Testfälle bestehen,</li>
+<li>welche fehlschlagen und welchen Produktfehler sie belegen,</li>
+<li>welche Testfälle bewusst als manuell/übersprungen gekennzeichnet
+sind.</li>
+</ul>
+<h2 id="wichtige-arbeitsregel-1">Wichtige Arbeitsregel</h2>
+<p>Claude Code erstellt die Testautomatisierung. Die fachliche
+Verantwortung für Auswahl, erwartetes Ergebnis und Freigabe bleibt bei
+den Testern.</p>
+<p>Die KI darf:</p>
+<ul>
+<li>aus <code>testfaelle.md</code> ausführbare Robot-Framework-Tests
+erstellen,</li>
+<li>wiederverwendbare Keywords und eine sinnvolle Projektstruktur
+anlegen,</li>
+<li>Testvorbedingungen über die API selbst herstellen und wieder
+aufräumen,</li>
+<li>Tests ausführen und die Ergebnisse zusammenfassen.</li>
+</ul>
+<p>Die KI darf nicht:</p>
+<ul>
+<li>den Anwendungscode verändern,</li>
+<li>vorbereitete Produktfehler beheben,</li>
+<li>das erwartete Ergebnis eines Tests an fehlerhaftes Ist-Verhalten
+anpassen, nur damit der Test „grün“ wird — die Tests bilden das
+dokumentierte <strong>Soll-Verhalten</strong> ab,</li>
+<li>dokumentierte manuelle Tests unbemerkt als automatisiert
+ausgeben.</li>
+</ul>
+<h2 id="arbeitsauftrag-für-die-teilnehmer">Arbeitsauftrag für die
+Teilnehmer</h2>
+<h3 id="voraussetzung-robot-framework-skill-installieren">Voraussetzung:
+Robot-Framework-Skill installieren</h3>
+<p>Installiert vor der ersten Verwendung von Robot Framework den dafür
+vorgesehenen Skill im Projektverzeichnis:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npx</span> skills add fmeag/skills</span></code></pre></div>
+<p>Folgt den Anweisungen des Installers. Erst nach erfolgreicher
+Installation darf Claude Code Robot-Framework-Tests erstellen oder
+ausführen.</p>
+<h3 id="schritt-1-testumgebung-vorbereiten">Schritt 1: Testumgebung
+vorbereiten</h3>
+<p>Startet die Anwendung in einem definierten Ausgangszustand. Empfohlen
+wird eine <strong>separate Test-Datenbank</strong>, damit die produktive
+<code>hotel.db</code> nicht verändert wird:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">DATABASE_URL</span><span class="op">=</span><span class="st">&quot;sqlite:///./data/robot_run.db&quot;</span> <span class="dt">\</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">.venv/bin/python</span> <span class="at">-m</span> uvicorn app.main:app <span class="at">--host</span> 127.0.0.1 <span class="at">--port</span> 8000</span></code></pre></div>
+<p>Für die E2E-Tests müssen die Browser der Browser-Library einmalig
+initialisiert sein (<code>.venv/bin/rfbrowser init</code>).</p>
+<h3 id="schritt-2-testsuite-von-claude-code-erstellen-lassen">Schritt 2:
+Testsuite von Claude Code erstellen lassen</h3>
+<p>Verwendet beispielsweise folgenden Auftrag:</p>
+<blockquote>
+<p>Lies die Testing-Dokumentation in <code>docs/testing/</code> und
+erstelle automatisierte Testfälle mit dem Robot Framework aus
+<code>docs/testing/testfaelle.md</code>. Verändere den Anwendungscode
+nicht.</p>
+</blockquote>
+<p>Achtet bewusst darauf, den Auftrag zunächst nur auf die
+<strong>Automatisierungs­kandidaten</strong> (🤖) und die technisch
+automatisierbaren Sicherheitstests zu beziehen und die als manuell
+markierten Fälle (🧪, z. B. Concurrency, Persistenz nach Neustart) als
+solche zu kennzeichnen.</p>
+<h3 id="schritt-3-aufbau-der-suite-prüfen">Schritt 3: Aufbau der Suite
+prüfen</h3>
+<p>Prüft gemeinsam:</p>
+<ul>
+<li>Ist die Suite in <strong>zwei Ebenen</strong> getrennt (lesbare
+Testfälle vs. gekapselte Low-Level-Keywords in
+<code>resources/</code>)?</li>
+<li>Trägt jeder Test seine <strong>Testfall-ID</strong>
+(<code>TC-...</code>) als Tag, sodass die Rückverfolgbarkeit zu
+<code>testfaelle.md</code> erhalten bleibt?</li>
+<li>Stellen die Tests ihre Vorbedingungen selbst her und räumen sie
+wieder auf (die Seed-Daten enthalten nur Räume, keine
+Gäste/Nachrichten)?</li>
+<li>Wurden API- und E2E-Ebene passend zur Vorgabe aus
+<code>testfaelle.md</code> gewählt?</li>
+<li>Wurden die manuellen Fälle <strong>nicht</strong> stillschweigend
+„mitautomatisiert“?</li>
+</ul>
+<h3 id="schritt-4-suite-ausführen-und-ergebnisse-interpretieren">Schritt
+4: Suite ausführen und Ergebnisse interpretieren</h3>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">.venv/bin/python</span> <span class="at">-m</span> robot <span class="at">--outputdir</span> results/robot-full tests/robot</span></code></pre></div>
+<p>Betrachtet <code>results/robot-full/report.html</code> und
+<code>log.html</code> und ordnet jedes Ergebnis ein:</p>
+<ul>
+<li><strong>Bestanden:</strong> Die Anwendung erfüllt das dokumentierte
+Soll-Verhalten.</li>
+<li><strong>Übersprungen:</strong> bewusst manuell gehaltene Fälle (z.
+B. Concurrency, Neustart).</li>
+<li><strong>Fehlgeschlagen:</strong> Hier weicht das Ist-Verhalten vom
+dokumentierten Soll-Verhalten ab. In diesem Projekt schlagen
+insbesondere die drei XSS-Tests (<code>TC-SEC-001..003</code>) fehl —
+sie weisen einen realen, vorbereiteten Produktfehler nach
+(Nachrichteninhalte werden ungeschützt gerendert).</li>
+</ul>
+<p>Wichtig: Ein fehlgeschlagener Sicherheitstest ist an dieser Stelle
+<strong>kein</strong> Testfehler, sondern der erwartete Nachweis eines
+Produktfehlers. Der Fehler wird in dieser Aufgabe noch nicht
+behoben.</p>
+<h2 id="gemeinsames-review-1">Gemeinsames Review</h2>
+<h3 id="reviewfragen-1">Reviewfragen</h3>
+<ul>
+<li>Bildet jeder automatisierte Test seinen dokumentierten Testfall
+korrekt ab?</li>
+<li>Sind die erwarteten Ergebnisse aus dem Soll-Verhalten abgeleitet,
+nicht aus dem beobachteten Ist-Verhalten?</li>
+<li>Ist die Suite unabhängig von einer festen Ausführungsreihenfolge und
+wiederholbar?</li>
+<li>Sind die fehlschlagenden Tests nachvollziehbar einem Produktfehler
+zugeordnet?</li>
+<li>Sind manuelle Fälle klar als solche gekennzeichnet und
+begründet?</li>
+</ul>
+<h3 id="definition-of-done">Definition of Done</h3>
+<p>Die Aufgabe ist abgeschlossen, wenn:</p>
+<ul>
+<li>eine ausführbare Robot-Framework-Suite unter
+<code>tests/robot/</code> vorliegt,</li>
+<li>die automatisierten Tests auf die Testfall-IDs aus
+<code>testfaelle.md</code> zurückführbar sind,</li>
+<li>die Suite gegen die laufende Anwendung ausgeführt wurde,</li>
+<li>die Ergebnisse (bestanden / fehlgeschlagen / übersprungen)
+dokumentiert und interpretiert sind,</li>
+<li>die fehlschlagenden Tests einem konkreten Produktfehler zugeordnet
+sind,</li>
+<li>Claude Code <strong>keine</strong> Anwendungsdateien verändert
+hat.</li>
+</ul>
+<h2 id="reflexion-1">Reflexion</h2>
+<p>Besprecht zum Abschluss:</p>
+<ol type="1">
+<li>Welche Testfälle ließen sich unmittelbar automatisieren, welche
+nicht — und warum?</li>
+<li>Wie hat die Trennung in Keyword-Ebene und Testfall-Ebene die
+Lesbarkeit beeinflusst?</li>
+<li>Wodurch wurde der vorbereitete Produktfehler sichtbar, der bei der
+reinen Dokumentenprüfung (Aufgabe 1) verborgen blieb?</li>
+<li>Woran erkennt man, dass ein fehlgeschlagener Test ein Produkt- und
+kein Testfehler ist?</li>
+<li>Welche Risiken bestehen, wenn man Tests an das Ist-Verhalten
+anpasst, statt an das Soll-Verhalten?</li>
+</ol>
+<hr />
+<h1
+id="schulungsaufgabe-3-produktfehler-testgetrieben-beheben">Schulungsaufgabe
+3: Produktfehler testgetrieben beheben</h1>
+<h2 id="einordnung-2">Einordnung</h2>
+<p>Diese Aufgabe ist der dritte praktische Teil der Testerschulung. Sie
+schließt den Kreis: Der in Schulungsaufgabe 2 durch fehlschlagende Tests
+nachgewiesene Produktfehler wird jetzt behoben — <strong>auf Basis der
+fehlschlagenden Testfälle</strong> und mit ihnen als
+Erfolgsnachweis.</p>
+<p>Hier ändert sich die zentrale Arbeitsregel bewusst: Während in den
+Aufgaben 1 und 2 der Anwendungscode unangetastet blieb, ist die
+Codeänderung nun ausdrücklich Ziel der Aufgabe. Die Teilnehmenden
+erleben den Perspektivwechsel von der Fehler<strong>erkennung</strong>
+zur Fehler<strong>behebung</strong> und lernen, fehlgeschlagene Tests
+als ausführbare Spezifikation zu nutzen.</p>
+<h2 id="ausgangssituation-2">Ausgangssituation</h2>
+<p>Das Projekt enthält zu Beginn dieser Aufgabe:</p>
+<ul>
+<li>die ausführbare Robot-Framework-Suite aus Aufgabe 2,</li>
+<li>einen dokumentierten Testlauf mit fehlschlagenden Tests
+(<code>TC-SEC-001..003</code>),</li>
+<li>die zugehörige Testdokumentation und die
+Projekt-Entscheidungshistorie (<code>docs/decisions.md</code>,
+<code>docs/changelog.md</code>).</li>
+</ul>
+<p>Das Projekt enthält zu Beginn noch nicht:</p>
+<ul>
+<li>die Fehlerbehebung im Anwendungscode,</li>
+<li>den Nachweis, dass die zuvor roten Tests nach der Behebung
+bestehen,</li>
+<li>die aktualisierte Projektdokumentation zur Behebung.</li>
+</ul>
+<h2 id="lernziele-2">Lernziele</h2>
+<p>Nach der Aufgabe können die Teilnehmer:</p>
+<ul>
+<li>einen fehlgeschlagenen Test als präzise Vorgabe für eine Behebung
+lesen,</li>
+<li>Claude Code gezielt zur Ursachenanalyse und zu einer minimalen
+Behebung einsetzen,</li>
+<li>die vorgeschlagene Codeänderung fachlich und technisch
+bewerten,</li>
+<li>den Erfolg einer Behebung durch einen erneuten Testlauf belegen
+(Regressionsnachweis),</li>
+<li>erkennen, warum Tests nicht aufgeweicht werden dürfen, um sie „grün“
+zu bekommen,</li>
+<li>Behebungen nachvollziehbar in Changelog und
+Entscheidungsdokumentation festhalten.</li>
+</ul>
+<h2 id="erwartetes-ergebnis-2">Erwartetes Ergebnis</h2>
+<p>Am Ende der Aufgabe:</p>
+<ul>
+<li>ist der Produktfehler im Anwendungscode behoben,</li>
+<li>bestehen die zuvor fehlgeschlagenen Tests
+(<code>TC-SEC-001..003</code>),</li>
+<li>ist die übrige Suite unverändert grün (bewusste manuelle Skips
+ausgenommen),</li>
+<li>sind Changelog (Abschnitt „Fixed“) und Entscheidungsdokumentation
+(<code>docs/decisions.md</code>) entsprechend ergänzt.</li>
+</ul>
+<h2 id="wichtige-arbeitsregel-2">Wichtige Arbeitsregel</h2>
+<p>Claude Code führt die Behebung durch. Die Entscheidung, ob die
+Behebung fachlich und technisch angemessen ist, bleibt bei den
+Teilnehmenden.</p>
+<p>Die KI darf:</p>
+<ul>
+<li>die fehlgeschlagenen Tests als Vorgabe für die Behebung
+heranziehen,</li>
+<li>die Ursache im Anwendungscode analysieren und benennen,</li>
+<li>eine minimale, begründete Codeänderung vornehmen,</li>
+<li>die Behebung durch erneutes Ausführen der Tests belegen,</li>
+<li>Changelog und Entscheidungsdokumentation aktualisieren.</li>
+</ul>
+<p>Die KI darf nicht:</p>
+<ul>
+<li>die Tests abschwächen, umschreiben oder deaktivieren, damit sie
+bestehen,</li>
+<li>über das durch die Tests belegte Soll-Verhalten hinaus „raten“ oder
+unnötig große Umbauten vornehmen,</li>
+<li>gespeicherte Nutzdaten stillschweigend verändern, um ein Symptom zu
+kaschieren,</li>
+<li>eine Behebung als abgeschlossen ausgeben, solange nicht alle
+betroffenen Tests nachweislich bestehen.</li>
+</ul>
+<h2 id="arbeitsauftrag-für-die-teilnehmer-1">Arbeitsauftrag für die
+Teilnehmer</h2>
+<h3 id="schritt-1-fehlschläge-verstehen">Schritt 1: Fehlschläge
+verstehen</h3>
+<p>Öffnet den Testlauf aus Aufgabe 2 (<code>results/.../log.html</code>)
+und arbeitet heraus:</p>
+<ul>
+<li>Welche Testfälle schlagen fehl (<code>TC-SEC-001..003</code>)?</li>
+<li>Welches <strong>Soll-Verhalten</strong> fordern sie
+(Nachrichteninhalt wird als Text angezeigt, HTML wird nicht gerendert,
+Skripte/Event-Handler werden nicht ausgeführt)?</li>
+<li>Welches Ist-Verhalten zeigt die Anwendung stattdessen?</li>
+</ul>
+<h3 id="schritt-2-behebung-von-claude-code-durchführen-lassen">Schritt
+2: Behebung von Claude Code durchführen lassen</h3>
+<p>Verwendet beispielsweise folgenden Auftrag:</p>
+<blockquote>
+<p>Bitte behebe die Fehler im Code auf Basis der fehlgeschlagenen
+Testfälle.</p>
+</blockquote>
+<h3 id="schritt-3-ursachenanalyse-prüfen">Schritt 3: Ursachenanalyse
+prüfen</h3>
+<p>Prüft gemeinsam, ob die benannte Ursache belegt ist:</p>
+<ul>
+<li>Wo entsteht der Fehler (z. B. Rendering der Nachrichten in
+<code>static/js/messages.js</code> und
+<code>static/js/guest_messages.js</code>)?</li>
+<li>Warum führt er zur Ausführung von eingeschleustem HTML/JavaScript
+(Ausgabe über <code>innerHTML</code> statt textbasiert)?</li>
+<li>Sind sowohl Rezeptions- als auch Gastsicht betroffen?</li>
+</ul>
+<h3 id="schritt-4-behebung-bewerten">Schritt 4: Behebung bewerten</h3>
+<p>Prüft die vorgeschlagene Änderung auf Angemessenheit:</p>
+<ul>
+<li>Ist die Behebung <strong>minimal</strong> und auf die Ursache
+bezogen (Ausgabe als Text,
+<ol start="26" type="a">
+<li>B. über <code>textContent</code> / DOM-Aufbau, statt
+HTML-Interpolation)?</li>
+</ol></li>
+<li>Bleiben API, Datenmodell und gespeicherte Daten unverändert
+(Behebung als Ausgabe-, nicht als Eingabeproblem)?</li>
+<li>Wurden <strong>keine</strong> Tests abgeschwächt, um Grün zu
+erzeugen?</li>
+</ul>
+<h3 id="schritt-5-regressionsnachweis-führen">Schritt 5:
+Regressionsnachweis führen</h3>
+<p>Führt die Suite erneut aus:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">.venv/bin/python</span> <span class="at">-m</span> robot <span class="at">--outputdir</span> results/robot-full tests/robot</span></code></pre></div>
+<p>Belegt, dass die zuvor roten Tests jetzt bestehen und keine zuvor
+grünen Tests neu fehlschlagen. Die Sicherheitstests dienen nun als
+<strong>Regressionsschutz</strong>.</p>
+<h3 id="schritt-6-dokumentation-nachziehen">Schritt 6: Dokumentation
+nachziehen</h3>
+<p>Haltet die Behebung nachvollziehbar fest:</p>
+<ul>
+<li><code>docs/changelog.md</code>: Eintrag unter „Fixed“,</li>
+<li><code>docs/decisions.md</code>: kurze Entscheidung zur gewählten
+Behebung inkl. verworfener Alternativen.</li>
+</ul>
+<hr />
+<h1
+id="schulungsaufgabe-4-optional-benutzerdokumentation-mit-screenshots-erstellen">Schulungsaufgabe
+4 (optional): Benutzerdokumentation mit Screenshots erstellen</h1>
+<h2 id="einordnung-3">Einordnung</h2>
+<p>Diese optionale Aufgabe löst sich bewusst von Robot Framework und der
+Testautomatisierung. Die Teilnehmenden erstellen eine
+Benutzerdokumentation für die nun geprüfte und fehlerbereinigte
+Hotel-Anwendung. Dafür nutzen sie bestätigte Abläufe aus der
+Testdokumentation und automatisch erzeugte Screenshots der tatsächlich
+laufenden Anwendung.</p>
+<p>Die Testfälle dienen als fachliche Quelle für Vorbedingungen und
+Abläufe. Sie sind jedoch keine Benutzerdokumentation: Technische
+Prüfschritte, Negativfälle und interne Details werden nicht
+übernommen.</p>
+<h2 id="lernziele-3">Lernziele</h2>
+<p>Nach der Aufgabe können die Teilnehmer:</p>
+<ul>
+<li>geprüfte Produktinformationen zielgruppengerecht für Anwender
+aufbereiten,</li>
+<li>eine Browser-Automatisierung zum reproduzierbaren Erstellen von
+Screenshots einsetzen,</li>
+<li>Testfälle als Quelle nutzen, ohne Test- und Benutzerdokumentation zu
+vermischen,</li>
+<li>verständliche Schritt-für-Schritt-Anleitungen mit passenden
+Screenshots prüfen,</li>
+<li>erkennen, dass auch KI-generierte Benutzerdokumentation fachliches
+Review benötigt.</li>
+</ul>
+<h2 id="erwartetes-ergebnis-3">Erwartetes Ergebnis</h2>
+<p>Am Ende der Aufgabe liegt eine Benutzerdokumentation mit Screenshots
+vor:</p>
+<pre class="text"><code>docs/
+└── user-guide/
+    ├── README.md
+    └── images/
+        ├── check-in.png
+        ├── message-to-room.png
+        └── guest-chat.png</code></pre>
+<p>Die Dokumentation beschreibt die wesentlichen Bedienabläufe der
+Hotel-Anwendung aus Sicht von Rezeption und Gast. Sie enthält
+ausschließlich Screenshots der laufenden, fehlerbereinigten Anwendung
+mit plausiblen, nicht vertraulichen Beispieldaten.</p>
+<h2 id="wichtige-arbeitsregel-3">Wichtige Arbeitsregel</h2>
+<p>Robot Framework ist für diese Aufgabe <strong>keine
+Voraussetzung</strong>. Die Screenshots werden mit einer geeigneten
+Browser-Automatisierung erzeugt; sie muss die echte Anwendung bedienen
+und jeden Screenshot in einem definierten Zustand erstellen.</p>
+<p>Die KI darf:</p>
+<ul>
+<li>die vorhandene Test- und Projektdokumentation als Quelle
+auswerten,</li>
+<li>die Anwendung mit sicheren Beispieldaten in definierte Zustände
+versetzen,</li>
+<li>Screenshots automatisch erzeugen und in die Dokumentation
+einbinden,</li>
+<li>verständliche Entwürfe für die Benutzerdokumentation erstellen.</li>
+</ul>
+<p>Die KI darf nicht:</p>
+<ul>
+<li>Anwendungscode, Testfälle oder die fachliche Testdokumentation
+verändern,</li>
+<li>technische Testschritte, interne IDs oder Fehlerdetails als
+Bedienanleitung ausgeben,</li>
+<li>Screenshots aus einem unklaren Zustand oder mit vertraulichen
+Echtdaten verwenden,</li>
+<li>nicht belegte Funktionen oder erwartetes Verhalten ergänzen.</li>
+</ul>
+<h2 id="arbeitsauftrag-für-die-teilnehmer-2">Arbeitsauftrag für die
+Teilnehmer</h2>
+<h3
+id="schritt-1-benutzerdokumentation-automatisiert-erzeugen-lassen">Schritt
+1: Benutzerdokumentation automatisiert erzeugen lassen</h3>
+<p>Startet die Anwendung mit einer separaten Test-Datenbank in einem
+definierten Zustand. Gebt Claude Code anschließend beispielsweise diesen
+Auftrag:</p>
+<blockquote>
+<p>Erstelle eine deutsche Benutzerdokumentation für die Hotel-Anwendung
+unter <code>docs/user-guide/README.md</code> und speichere die
+zugehörigen Screenshots unter <code>docs/user-guide/images/</code>.</p>
+<p>Nutze <code>docs/overview.md</code>, die geprüfte Testdokumentation
+in <code>docs/testing/</code> sowie die tatsächlich laufende Anwendung
+als Quellen. Dokumentiere nur bestätigte, für Anwender relevante
+Abläufe: Zimmer und Gäste verwalten, Check-in, Check-out, Nachricht an
+ein Zimmer senden sowie Gastnachrichten lesen und beantworten.</p>
+<p>Erzeuge die Screenshots automatisiert durch Bedienung der laufenden
+Anwendung. Stelle für jeden Screenshot einen definierten Zustand mit
+plausiblen, nicht vertraulichen Beispieldaten her. Verwende keine
+Screenshots aus Testberichten und keine Robot-Framework-Ausgabe.</p>
+<p>Schreibe kurze, nummerierte Anleitungen aus Sicht der jeweiligen
+Nutzerrolle. Erkläre weder API, Datenbank, Testautomatisierung noch
+bekannte Produktfehler. Verändere ausschließlich Dateien unter
+<code>docs/user-guide/</code>. Nenne anschließend die verwendeten
+Quellen und alle erzeugten oder veränderten Dateien.</p>
+</blockquote>
+<h3 id="schritt-2-ergebnis-gezielt-prüfen">Schritt 2: Ergebnis gezielt
+prüfen</h3>
+<p>Prüft nur die erzeugte Benutzerdokumentation und die referenzierten
+Screenshots:</p>
+<ul>
+<li>Beschreibt jede Anleitung einen tatsächlich vorhandenen und
+verständlichen Ablauf?</li>
+<li>Passt jeder Screenshot exakt zum zugehörigen Schritt?</li>
+<li>Sind Rollen, Bezeichnungen und sichtbare Statuswerte korrekt?</li>
+<li>Enthalten Text und Bilder keine Testdetails, technischen Interna
+oder vertraulichen Daten?</li>
+<li>Können Rezeption und Gast die Anleitung ohne Kenntnis der Testfälle
+verwenden?</li>
+</ul>
+<p>Korrigiert festgestellte Abweichungen gezielt in
+<code>docs/user-guide/</code>.</p>
+<h2 id="definition-of-done-1">Definition of Done</h2>
+<p>Die Aufgabe ist abgeschlossen, wenn:</p>
+<ul>
+<li><code>docs/user-guide/README.md</code> die wesentlichen
+Anwenderabläufe verständlich beschreibt,</li>
+<li>alle eingebundenen Screenshots automatisiert aus der laufenden
+Anwendung erzeugt wurden,</li>
+<li>jeder Screenshot zum beschriebenen Schritt passt,</li>
+<li>die Dokumentation keine Test- oder Implementierungsdetails
+enthält,</li>
+<li>ausschließlich Dateien unter <code>docs/user-guide/</code> verändert
+wurden.</li>
+</ul>
+<h2 id="reflexion-2">Reflexion</h2>
+<p>Besprecht zum Abschluss:</p>
+<ol type="1">
+<li>Welche Informationen aus den Testfällen waren für die
+Benutzerdokumentation hilfreich, welche ungeeignet?</li>
+<li>Welche Risiken entstehen durch automatisch erzeugte, aber nicht
+geprüfte Screenshots?</li>
+<li>Was unterscheidet einen reproduzierbaren Testablauf von einer
+hilfreichen Bedienanleitung?</li>
+<li>Welche Teile der Dokumentation müssten bei einer UI-Änderung erneut
+erzeugt und geprüft werden?</li>
+</ol>
+<hr />
+<h2 id="gemeinsames-review-2">Gemeinsames Review</h2>
+<h3 id="reviewfragen-2">Reviewfragen</h3>
+<ul>
+<li>Ist die Ursache belegt und nicht nur vermutet?</li>
+<li>Ist die Behebung minimal und auf das durch die Tests belegte
+Soll-Verhalten begrenzt?</li>
+<li>Wurden die Tests unverändert gelassen (kein Aufweichen)?</li>
+<li>Belegt ein erneuter Testlauf den Erfolg und die Abwesenheit neuer
+Fehlschläge?</li>
+<li>Ist die Behebung in Changelog und Entscheidungsdokumentation
+nachvollziehbar?</li>
+</ul>
+<h3 id="definition-of-done-2">Definition of Done</h3>
+<p>Die Aufgabe ist abgeschlossen, wenn:</p>
+<ul>
+<li>der Produktfehler im Anwendungscode behoben ist,</li>
+<li>die zuvor fehlgeschlagenen Tests nachweislich bestehen,</li>
+<li>keine zuvor bestehenden Tests neu fehlschlagen,</li>
+<li>die Tests inhaltlich unverändert geblieben sind,</li>
+<li>Changelog und Entscheidungsdokumentation aktualisiert wurden.</li>
+</ul>
+<h2 id="reflexion-3">Reflexion</h2>
+<p>Besprecht zum Abschluss:</p>
+<ol type="1">
+<li>Wie hat der fehlgeschlagene Test die Behebung angeleitet?</li>
+<li>Woran erkennt man, dass eine Behebung die Ursache und nicht nur ein
+Symptom trifft?</li>
+<li>Welche Gefahr entsteht, wenn Tests angepasst werden, um sie bestehen
+zu lassen?</li>
+<li>Welchen Wert haben die Sicherheitstests nach der Behebung als
+Regressionsschutz?</li>
+<li>Wie unterscheidet sich die Verantwortung des Menschen in Aufgabe 3
+von der in den Aufgaben 1 und 2?</li>
+</ol>
+</body>
+</html>
